@@ -1,95 +1,35 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+import {useState} from 'react';
+import { Container, Typography, Button, Box} from "@mui/material";
+import {ProfileFormDialog} from './components/profileForm';
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [profile, setProfile] = useState({first_name: "arnold", last_name: "sanders", title: "super app builder", description: "hood super smart star" })
+  const [visible, setVisible] = useState(false)
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  return (
+    <Container>
+    <Typography variant="h1" component="h2">
+      Cutz
+    </Typography>
+      <hr/>
+      <Box sx={{display: "flex", alignItems: "space-between"}}>
+        <Box sx={{minWidth: "200px"}}>
+          <Typography>Name: {`${profile.first_name} ${profile.last_name}`}</Typography>
+          <Typography>Title: {profile.title}</Typography>
+          <Typography>Description: {profile.description}</Typography>
+          <Typography>Address: 2605 Grand Concourse</Typography>
+        </Box>
+        <Box sx={{justifySelf: "flex-end"}}>
+          <Button variant="contained" color="success" onClick={() => setVisible(!open)}>Edit Profile</Button>
+        </Box>
+      </Box>
+      <ProfileFormDialog
+        visible={visible}
+        setVisible={setVisible}
+        profile={profile}
+        setProfile={setProfile}
+      />
+    </Container>
   );
 }
