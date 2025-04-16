@@ -29,11 +29,7 @@ useEffect(()=> {
 
 return (
   <Container>
-  <Typography variant="h1" component="h2">
-    Cutz
-  </Typography>
-    <hr/>
-    <Box sx={{display: "flex", alignItems: "space-between"}}>
+    <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "10px"}}>
       <Box sx={{minWidth: "200px"}}>
         <Typography>Name: {`${profile.first_name} ${profile.last_name}`}</Typography>
         <Typography>Title: {profile.title}</Typography>
