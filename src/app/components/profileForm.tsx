@@ -57,7 +57,9 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("last_name", profile.last_name);
       formData.append("title", profile.title);
       formData.append("description", profile.description);
-      formData.append("image_url", profile.image_url);
+      if (profile.image_url) {
+        formData.append("image_url", profile.image_url);
+      }
       formData.append("street_address", profile.street_address);
       formData.append("city", profile.city)
       formData.append("state", profile.state)
@@ -65,7 +67,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
 
       const response = await fetch(`http://localhost:8000/users/2/`, {
         credentials: 'include',
-        method: 'PUT',
+        method: 'PATCH', //Thank you gentleman on Stackoverflow =)
         headers: {
           'Accept': 'application/json',
           'X-CSRFToken': csrftoken
