@@ -3,6 +3,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton } from '@mui/material';
 
 export interface serviceCardProps {
     id: number;
@@ -18,8 +20,24 @@ export interface ServiceCardInputProps {
 }
 
 export const ServiceCard = ({service}: ServiceCardInputProps) => {
+    const deleteService = (id: number) => {
+      const response = confirm("Are you sure you want to delete this service?")
+      if (response) {
+        fetch(`http://localhost:8000/services/${id}`, {
+        method: "DELETE",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      })
+      }
+    }
+
     return (
         <Card sx={{ maxWidth: 345 }}>
+        <IconButton onClick={() => deleteService(service.id)}>
+            <DeleteIcon fontSize="large" color={"error"}></DeleteIcon>
+        </IconButton>
         <CardMedia
           sx={{ height: 140 }}
           image={service.image_url}
