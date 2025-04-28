@@ -8,13 +8,14 @@ export interface serviceCardProps {
     id: number;
     title: string;
     description: string;
-    image_url: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    image_url: any;
     price: string;
 }
 
-interface ServiceCardInputProps {
+export interface ServiceCardInputProps {
     service: serviceCardProps;
-  }
+}
 
 export const ServiceCard = ({service}: ServiceCardInputProps) => {
     return (

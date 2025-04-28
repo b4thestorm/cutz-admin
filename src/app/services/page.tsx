@@ -5,6 +5,7 @@ import {useState, useEffect} from 'react';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import {ServiceCard, serviceCardProps} from '../components/serviceCard';
+import { ServiceFormDialog } from "../components/serviceForm";
 
 export default function Services() {
     const [services, setServices] = useState<[serviceCardProps]>([{id: 2, title: "Light Caesar", description: "light top, light sides", price: "20.00", image_url: "/light_caesar.jpg"}])
@@ -27,9 +28,7 @@ export default function Services() {
     useEffect(()=> {
         getServices()
     }, [])  
-    //add ability to delete services
-    //add ability to update services
-
+    
     return (
         <Container>
         <Box sx={{padding: 10, display: "flex", justifyContent: "space-between"}}>
@@ -47,6 +46,7 @@ export default function Services() {
                 })
             )}
         </Box>
+        <ServiceFormDialog visibility={visible} setVisible={setVisible}/>
         </Container>
     )
 }
