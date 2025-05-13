@@ -51,6 +51,7 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
 
     return (
         <Dialog open={visibility}>
+            <button onClick={() => setVisible(false)}>X</button>
             <DialogTitle>New Service</DialogTitle>
             <form>
             <DialogContent>
