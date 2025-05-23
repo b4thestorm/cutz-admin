@@ -22,7 +22,6 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
     }
     
     const handleSubmit = async () => {
-        console.log("this is run")
         const csrftoken = getCookie('csrftoken') as string;
         const formData = new FormData()
         formData.append("barber", service.id.toString());

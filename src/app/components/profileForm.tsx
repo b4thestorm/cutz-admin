@@ -69,6 +69,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
     return (
       <Dialog open={visible}>
         <DialogTitle>Edit Profile</DialogTitle>
+        <button onClick={() => setVisible(false)}>X</button>
         <form>
         <DialogContent>
               <Stack direction={"column"} spacing={3}>
