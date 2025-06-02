@@ -1,24 +1,15 @@
 'use client'
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { Container, Typography, Button, Box} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
+import { UserContext } from "../contexts/userContext";
+
 import useSWR from 'swr';
 
 export default function Profile() {
-
+const {fetchUser } = useContext(UserContext);
 const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
 const [visible, setVisible] = useState(false)
-
-const fetchUser = async (id: string) => {
-  const response= await fetch(`http://localhost:8000/users/${id}`, {
-    method:"GET",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }
-  })
-  return await response.json();
-}
 
 const { mutate } = useSWR('id', fetchUser)
 

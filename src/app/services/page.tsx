@@ -2,7 +2,7 @@
 
 import useSWR from 'swr'
 import { Typography, Box, Container, Stack } from "@mui/material";
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import {ServiceCard, serviceCardProps} from '../components/serviceCard';
@@ -39,8 +39,7 @@ export default function Services() {
         }
     }
     
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    let { data: services, error, isLoading } = useSWR('services/', getServices, {revalidateOnFocus: true,});
+    let { data: services, isLoading } = useSWR('services/', getServices, {revalidateOnFocus: true,});
     const { mutate } = useSWR('services/', getServices)
 
     const displayServices = (services: any) => {
