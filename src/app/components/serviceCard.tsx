@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
+import { KeyedMutator, mutate } from 'swr';
 
 export interface serviceCardProps {
     id: number;
@@ -17,25 +18,19 @@ export interface serviceCardProps {
 
 export interface ServiceCardInputProps {
     service: serviceCardProps;
+    deleteService: (id: number)=>void;
+    mutate: KeyedMutator<void>;
 }
 
-export const ServiceCard = ({service}: ServiceCardInputProps) => {
-    const deleteService = (id: number) => {
-      const response = confirm("Are you sure you want to delete this service?")
-      if (response) {
-        fetch(`http://localhost:8000/services/${id}`, {
-        method: "DELETE",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      })
-      }
+export const ServiceCard = ({service, deleteService}: ServiceCardInputProps) => {
+    const handleDelete = () => {
+      deleteService(service.id)
+      mutate('services/')
     }
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-        <IconButton onClick={() => deleteService(service.id)}>
+        <IconButton onClick={handleDelete}>
             <DeleteIcon fontSize="large" color={"error"}></DeleteIcon>
         </IconButton>
         <CardMedia

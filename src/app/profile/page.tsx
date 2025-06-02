@@ -2,13 +2,14 @@
 import {useEffect, useState} from 'react';
 import { Container, Typography, Button, Box} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
+import useSWR from 'swr';
 
 export default function Profile() {
 
 const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
 const [visible, setVisible] = useState(false)
 
-const fetchUser = async (id: number) => {
+const fetchUser = async (id: string) => {
   const response= await fetch(`http://localhost:8000/users/${id}`, {
     method:"GET",
     headers: {
@@ -19,8 +20,10 @@ const fetchUser = async (id: number) => {
   return await response.json();
 }
 
+const { mutate } = useSWR('id', fetchUser)
+
 useEffect(()=> {
-   const user = fetchUser(2)
+   const user = fetchUser('2')
    user.then((data) => {
     const clone = {first_name: data.first_name, last_name: data.last_name, title: data.title, description: data.description, street_address: data.street_address, city: data.city, state: data.state, zip_code: data.zip_code, image_url: data.image_url}
     setProfile({...clone})
@@ -48,6 +51,7 @@ return (
       setVisible={setVisible}
       profile={profile}
       setProfile={setProfile}
+      mutate={mutate}
     />
   </Container>
 )}
