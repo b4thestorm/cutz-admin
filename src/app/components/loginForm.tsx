@@ -1,31 +1,55 @@
-import { Button, Box, Stack, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { Button, Box, Stack, TextField, Card } from "@mui/material";
+import { redirect } from "next/navigation";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/userContext";
+import { getCookie } from '../utils/utils';
+
+
 
 export function LoginForm() {
-    const [credentials, setCredentials] = useState({firstname: null, password: null})
-    
+    const [credentials, setCredentials] = useState({email: "", password: ""})
+    const { mapUser, setUser } = useContext(UserContext)
+
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
         const element = event.target as HTMLInputElement
         setCredentials({...credentials, [element.id]: element.value})
     }
-    const handleSubmit = () => {
-        
+
+    const handleSubmit = async () => {
+      const csrftoken = getCookie('csrftoken') as string;
+      const formData = JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      })
+
+      fetch(`http://localhost:8000/login`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-CSRFToken': csrftoken
+        },
+        body: formData,
+      }).then((resp) => {
+        const user = mapUser(resp.json())
+        setUser(user)
+        window.localStorage.setItem('user', JSON.stringify(user))
+        redirect('/profile')
+      })
+
     }
 
     return (
-        <Box sx={{display: "flex", justifyContent: "space-evenly"}}>
-        <Typography variant="h1" component="h2">
-          <Typography>Login</Typography>
-        </Typography>
-        <Box sx={{alignContent: "center"}}>
-          <Stack spacing={3} direction={"column"}>
+      <Card sx={{height: 250, width: 250, marginTop: 20}}>
             <form>
-                <TextField id="first_name" label="first name" variant="outlined" value={credentials.firstname} onChange={(event) => handleChange(event)} required/>
-                <TextField id="passowrd" label="password" variant="outlined" value={credentials.password} onChange={(event) => handleChange(event)}></TextField>
-                <Button variant="contained" color="success" onClick={handleSubmit}>Login</Button>
+            <Box sx={{display: "flex", flexDirection:"column", justifyContent: "space-evenly", alignContent: "flex-end", paddingLeft: 5, paddingRight:5, width: 250, height: 250}}>
+                <TextField id="email" label="email" variant="outlined" value={credentials.email} onChange={(event) => handleChange(event)} required/>
+                <TextField id="password" label="password" variant="outlined" value={credentials.password} onChange={(event) => handleChange(event)}></TextField>
+                <Button variant="contained" color="primary" onClick={handleSubmit}>Login</Button>
+            </Box>
             </form>
-          </Stack>
-        </Box>
-        </Box>
+        
+      </Card>
     )
 }
