@@ -8,7 +8,8 @@ import { UserContext } from "../contexts/userContext";
 export function NavBar() {
     const router = useRouter()
     const {isAuthenticated } = useContext(UserContext)
-    
+    console.log("isauthenticated", isAuthenticated)
+
     const navigationJSX = () => {
       if (isAuthenticated) {
         return (

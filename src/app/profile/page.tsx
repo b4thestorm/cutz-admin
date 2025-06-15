@@ -7,18 +7,19 @@ import { UserContext } from "../contexts/userContext";
 import useSWR from 'swr';
 
 export default function Profile() {
-const {fetchUser } = useContext(UserContext);
+const { fetchUser } = useContext(UserContext);
 const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
 const [visible, setVisible] = useState(false)
 
 const { mutate } = useSWR('id', fetchUser)
 
-useEffect(()=> {
-   const user = fetchUser('2')
-   user.then((data) => {
-    const clone = {first_name: data.first_name, last_name: data.last_name, title: data.title, description: data.description, street_address: data.street_address, city: data.city, state: data.state, zip_code: data.zip_code, image_url: data.image_url}
-    setProfile({...clone})
-   })
+useEffect(() => {
+  if (window.localStorage.hasOwnProperty('user')) {
+    const user = window.localStorage.getItem('user') || null
+    if (user) {
+      setProfile(JSON.parse(user))
+    }
+  }
 }, [])
 
 return (
