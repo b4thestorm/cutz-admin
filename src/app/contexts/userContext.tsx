@@ -18,9 +18,9 @@ type User = {
       }
 
 interface UserContextProps {
-  user: User | null;
+  user: (User | null);
   fetchUser: (id: string) => Promise<any>;
-  setUser: React.Dispatch<React.SetStateAction<User>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   logout: ()=> void;
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
@@ -73,10 +73,10 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
         }
       }).then((resp) => {
         console.log("success 200")
+        setIsAuthenticated((prevState) => !prevState)
         window.localStorage.removeItem('user')
       })
-      //setUser(null);
-      redirect('/')
+      setUser(null);
     };
     
     const fetchUser = async (id: string) => {

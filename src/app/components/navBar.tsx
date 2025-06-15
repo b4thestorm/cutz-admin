@@ -7,8 +7,12 @@ import { UserContext } from "../contexts/userContext";
 
 export function NavBar() {
     const router = useRouter()
-    const {isAuthenticated } = useContext(UserContext)
-    console.log("isauthenticated", isAuthenticated)
+    const {isAuthenticated, logout } = useContext(UserContext)
+
+    const handleLogOut = () => {
+      logout();
+      router.push('/');
+    }
 
     const navigationJSX = () => {
       if (isAuthenticated) {
@@ -17,6 +21,7 @@ export function NavBar() {
             <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/profile')}>Profile</Button>
             <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/services')}>Services</Button>
             <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/calendar')}>Calendar</Button>
+            <Button variant="outlined" sx={{color: "white"}} onClick={handleLogOut}>Logout</Button>
           </>
         )
       } else {

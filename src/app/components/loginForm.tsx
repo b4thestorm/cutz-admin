@@ -52,11 +52,13 @@ export function LoginForm() {
       }).then((data) => {
         const user = mapUser(data)
         setUser(user)
-        setIsAuthenticated((prevState) => !prevState);
         window.localStorage.setItem('user', JSON.stringify(user))
+        setIsAuthenticated((prevState) => !prevState)
         redirect('/profile')
       })
     }
+
+
 
     return (
       <Card sx={{height: 250, width: 250, marginTop: 20}}>
