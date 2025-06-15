@@ -65,13 +65,13 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
   
     const logout = () => {
       fetch(`http://localhost:8000/logout`, {
+        credentials: 'include',
         method:"GET",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         }
       }).then((resp) => {
-        console.log("success 200")
         setIsAuthenticated((prevState) => !prevState)
         window.localStorage.removeItem('user')
       })
@@ -79,6 +79,7 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
     
     const fetchUser = async (id: string) => {
         const response= await fetch(`http://localhost:8000/users/${id}`, {
+          credentials: 'include',
           method:"GET",
           headers: {
             'Accept': 'application/json',
