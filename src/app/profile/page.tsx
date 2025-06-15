@@ -4,14 +4,14 @@ import { Container, Typography, Button, Box} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
 import { UserContext } from "../contexts/userContext";
 
-import useSWR from 'swr';
+// import useSWR from 'swr';
 
 export default function Profile() {
 const { fetchUser } = useContext(UserContext);
 const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
 const [visible, setVisible] = useState(false)
 
-const { mutate } = useSWR('id', fetchUser)
+// const { mutate } = useSWR('id', fetchUser)
 
 useEffect(() => {
   if (window.localStorage.hasOwnProperty('user')) {
@@ -43,7 +43,6 @@ return (
       setVisible={setVisible}
       profile={profile}
       setProfile={setProfile}
-      mutate={mutate}
     />
   </Container>
 )}

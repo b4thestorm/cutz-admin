@@ -7,10 +7,11 @@ import { UserContext } from "../contexts/userContext";
 
 export function NavBar() {
     const router = useRouter()
-    const {isAuthenticated, logout } = useContext(UserContext)
+    const {isAuthenticated, logout, setUser } = useContext(UserContext)
 
     const handleLogOut = () => {
       logout();
+      setUser(null)
       router.push('/');
     }
 

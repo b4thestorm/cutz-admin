@@ -1,5 +1,4 @@
 'use client'
-import { redirect } from "next/navigation";
 import { createContext, useEffect, useState } from 'react';
 
 type User = {
@@ -18,7 +17,7 @@ type User = {
       }
 
 interface UserContextProps {
-  user: (User | null);
+  user: User;
   fetchUser: (id: string) => Promise<any>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   logout: ()=> void;
@@ -76,7 +75,6 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
         setIsAuthenticated((prevState) => !prevState)
         window.localStorage.removeItem('user')
       })
-      setUser(null);
     };
     
     const fetchUser = async (id: string) => {

@@ -7,7 +7,6 @@ import {getCookie} from '../utils/utils';
 export interface ProfileFormProps {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
-    mutate: KeyedMutator<any>;
     profile: {
       first_name: string,
       last_name: string,
@@ -25,7 +24,7 @@ export interface ProfileFormProps {
   }
 
 export function ProfileFormDialog(props: ProfileFormProps) {
-    const { visible, profile, setProfile, setVisible, mutate } = props;
+    const { visible, profile, setProfile, setVisible } = props;
     let csrftoken: string;
 
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
@@ -36,7 +35,6 @@ export function ProfileFormDialog(props: ProfileFormProps) {
           mutatedProfile = {...profile, "image_url": file}
         }
         setProfile(mutatedProfile)
-        mutate('2')
     }
   
     const handleSubmit = async () => {
