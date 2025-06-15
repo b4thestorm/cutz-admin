@@ -11,7 +11,19 @@ export function NavBar() {
 
     const handleLogOut = () => {
       logout();
-      setUser(null)
+      setUser({id: "",
+      image_url: "",
+      email: "",
+      description: "",
+      street_address: "",
+      city: "",
+      state: "",
+      zip_code: "",
+      first_name: "",
+      last_name: "",
+      title: "",
+      role: ""
+    })
       router.push('/');
     }
 

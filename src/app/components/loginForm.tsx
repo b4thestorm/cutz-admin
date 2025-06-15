@@ -1,6 +1,6 @@
 import { Button, Box, Stack, TextField, Card } from "@mui/material";
 import { redirect } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../contexts/userContext";
 import { getCookie } from '../utils/utils';
 

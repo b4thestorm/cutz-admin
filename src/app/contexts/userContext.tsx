@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 type User = {
          id: string;
@@ -19,7 +19,7 @@ type User = {
 interface UserContextProps {
   user: User;
   fetchUser: (id: string) => Promise<any>;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
   logout: ()=> void;
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,6 +74,19 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
       }).then((resp) => {
         setIsAuthenticated((prevState) => !prevState)
         window.localStorage.removeItem('user')
+        setUser({id: "",
+        image_url: "",
+        email: "",
+        description: "",
+        street_address: "",
+        city: "",
+        state: "",
+        zip_code: "",
+        first_name: "",
+        last_name: "",
+        title: "",
+        role: ""
+      })
       })
     };
     
