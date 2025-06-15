@@ -1,5 +1,6 @@
 'use client'
 import { createContext, useState } from 'react';
+import { BASE_URL } from '../utils/utils';
 
 type User = {
          id: string;
@@ -64,7 +65,7 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
     const [isAuthenticated, setIsAuthenticated] = useState(false); // Initial state for the user
   
     const logout = () => {
-      fetch(`http://localhost:8000/logout`, {
+      fetch(`${BASE_URL}/logout`, {
         credentials: 'include',
         method:"GET",
         headers: {

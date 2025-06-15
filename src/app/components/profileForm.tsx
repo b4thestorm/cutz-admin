@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { SetStateAction, Dispatch } from 'react';
 import { KeyedMutator } from 'swr';
-import {getCookie} from '../utils/utils'; 
+import {BASE_URL, getCookie} from '../utils/utils'; 
 
 
 export interface ProfileFormProps {
@@ -52,7 +52,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("state", profile.state)
       formData.append("zip_code", profile.zip_code);
 
-      const response = await fetch(`http://localhost:8000/users/2/`, {
+      const response = await fetch(`${BASE_URL}/users/2/`, {
         credentials: 'include',
         method: 'PATCH', //Thank you gentleman on Stackoverflow =)
         headers: {

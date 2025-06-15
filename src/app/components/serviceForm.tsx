@@ -1,7 +1,7 @@
 import {Dispatch, SetStateAction, useState} from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { serviceCardProps } from './serviceCard';
-import {getCookie} from '../utils/utils'; 
+import {getCookie, BASE_URL} from '../utils/utils'; 
 
 export interface ServiceFormProps {
     visibility: boolean;
@@ -32,7 +32,7 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
           formData.append("image_url", service.image_url);
         }
 
-        const response = await fetch(`http://localhost:8000/services/`, {
+        const response = await fetch(`${BASE_URL}/services/`, {
           credentials: 'include',
           method: 'POST',
           headers: {

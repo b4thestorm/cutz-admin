@@ -2,7 +2,7 @@ import { Button, Box, Stack, TextField, Card } from "@mui/material";
 import { redirect } from "next/navigation";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/userContext";
-import { getCookie } from '../utils/utils';
+import { BASE_URL, getCookie } from '../utils/utils';
 
 
 
@@ -38,7 +38,7 @@ export function LoginForm() {
         password: credentials.password,
       })
 
-      fetch(`http://localhost:8000/login`, {
+      fetch(`${BASE_URL}/login`, {
         credentials: 'include',
         method: 'POST',
         headers: {
