@@ -5,7 +5,7 @@ export default function Calendar() {
     return (
         <Box sx={{padding: 10, display: "flex", justifyContent: "space-between"}}>
             <Typography variant="h3">Calendar</Typography>
-            <CalendarCard/>
+            <CalendarCard />
         </Box>
     )
 }
