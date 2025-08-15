@@ -4,44 +4,34 @@ import {Card, CardContent, CardMedia, Typography, Button} from '@mui/material'
 import { BASE_URL} from '../utils/utils';
 
 
-export const CalendarCard = () => {
-  const [type, setType] = useState<string>("gcal");
-  const [enabled, setEnabled] = useState<boolean>(() => {
-    let state = localStorage.getItem(`${type}`)
-    return (state === "true")
-  })
+export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;}) => {
 
-  const handleAuth = () => { 
+  const handleAuth = async () => { 
     fetch(`${BASE_URL}/integrations/gcal_init/`, {
       credentials: 'include',
       method: 'GET',
     })
-    setType("gcal")
-  }
-
-  const checkConnected = async () => {
-      const response = await fetch(`${BASE_URL}/integrations/connected/?type=${type}`, {
-      credentials: 'include',
-      method: 'GET',
-      })
-
-      if (response.status === 304) {
-        setTimeout(() => {
-          console.log("polling")
-        }, 3000);
-        await checkConnected()
-      } else if (response.status === 200) {
-        setEnabled(true)
-        localStorage.setItem(`${type}`, "true")
-      }
   }
 
   useEffect(()=> {
-      if (!enabled) {
-        //Short POLL on 3 second interval
-        checkConnected()
+    //can check for multiple types of events here, which is a cool thing to be able to do
+    const response = new EventSource(`${BASE_URL}/integrations/events/`) //Open SSE connection
+    response.onmessage = (event) => {
+      if (event.data['status'] === "connected") {
+          setIsEnabled((prevState: any) => !prevState)
+          localStorage.setItem('enabled', isEnabled.toString())
+          response.close()
       }
-  }, [handleAuth])
+
+    }
+    response.onerror = (error) => {
+      response.close()
+    }
+    return () => {
+      response.close() //avoid resource leak
+    }
+  }, [])
+
   
   return (
     <Card>
@@ -55,9 +45,7 @@ export const CalendarCard = () => {
             Google Calendar helps you stay on top of your plans - at home, at work and everywhere in between. 
           </Typography>
         </CardContent>
-        <Button onClick={handleAuth}>
-            Authorize
-        </Button> 
+        <Button onClick={() => handleAuth()}> Authorize </Button>
     </Card>
     )
 }
