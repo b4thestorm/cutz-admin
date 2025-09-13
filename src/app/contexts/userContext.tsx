@@ -18,6 +18,7 @@ type User = {
       }
 
 type  Profile = {
+  id: string;
   first_name: string;
   last_name: string;
   title: string;
@@ -59,7 +60,7 @@ export const UserContext = createContext<UserContextProps>({
   setUser: (User) => {},
   logout: ()=>{},
   isAuthenticated: false,
-  profile: {first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""},
+  profile: {id: "", first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""},
   setProfile: (Profile) => {}
 });
 
@@ -79,7 +80,7 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
       role: ""
     }); // Initial state for the user
     const [isAuthenticated, setIsAuthenticated] = useState(false); // Initial state for the user
-    const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
+    const [profile, setProfile] = useState({id: "", first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
 
     const logout = () => {
       fetch(`${BASE_URL}/logout`, {

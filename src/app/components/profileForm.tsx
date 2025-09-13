@@ -7,6 +7,7 @@ export interface ProfileFormProps {
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
     profile: {
+      id: string,
       first_name: string,
       last_name: string,
       title: string,
@@ -52,7 +53,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("state", profile.state)
       formData.append("zip_code", profile.zip_code);
 
-      fetch(`${BASE_URL}/users/2/`, {
+      fetch(`${BASE_URL}/users/${profile.id}/`, {
         credentials: 'include',
         method: 'PATCH', //Thank you gentleman on Stackoverflow =)
         headers: {

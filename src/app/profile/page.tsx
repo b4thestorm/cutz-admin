@@ -26,7 +26,7 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  mutateUser('2')
+  mutateUser(profile.id)
 }, [saved])
 
 return (
