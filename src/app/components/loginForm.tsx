@@ -50,7 +50,7 @@ export function LoginForm() {
             <form>
             <Box sx={{display: "flex", flexDirection:"column", justifyContent: "space-evenly", alignContent: "flex-end", paddingLeft: 5, paddingRight:5, width: 250, height: 250}}>
                 <TextField id="email" label="email" variant="outlined" value={credentials.email} onChange={(event) => handleChange(event)} required/>
-                <TextField id="password" label="password" variant="outlined" value={credentials.password} onChange={(event) => handleChange(event)}></TextField>
+                <TextField id="password" label="password" variant="outlined" value={credentials.password} onChange={(event) => handleChange(event)} type="password"></TextField>
                 <Button variant="contained" color="primary" onClick={handleSubmit}>Login</Button>
             </Box>
             </form>
