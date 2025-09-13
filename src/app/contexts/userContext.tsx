@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { BASE_URL } from '../utils/utils';
 
 type User = {
@@ -17,6 +17,18 @@ type User = {
          role: string;
       }
 
+type  Profile = {
+  first_name: string;
+  last_name: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  street_address: string;
+  city: string;
+  state: string;
+  zip_code: string;
+}
+
 interface UserContextProps {
   user: User;
   fetchUser: (id: string) => Promise<any>;
@@ -24,6 +36,8 @@ interface UserContextProps {
   logout: ()=> void;
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  profile: Profile;
+  setProfile: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -45,6 +59,8 @@ export const UserContext = createContext<UserContextProps>({
   setUser: (User) => {},
   logout: ()=>{},
   isAuthenticated: false,
+  profile: {first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""},
+  setProfile: (Profile) => {}
 });
 
 export const UserProvider = ({children}: {children: React.ReactElement | React.ReactElement[]}) => {
@@ -63,7 +79,8 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
       role: ""
     }); // Initial state for the user
     const [isAuthenticated, setIsAuthenticated] = useState(false); // Initial state for the user
-  
+    const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
+
     const logout = () => {
       fetch(`${BASE_URL}/logout`, {
         credentials: 'include',
@@ -74,7 +91,7 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
         }
       }).then((resp) => {
         setIsAuthenticated((prevState) => !prevState)
-        window.localStorage.removeItem('user')
+        localStorage.removeItem('user')
         setUser({id: "",
         image_url: "",
         email: "",
@@ -92,7 +109,7 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
     };
     
     const fetchUser = async (id: string) => {
-        const response= await fetch(`http://localhost:8000/users/${id}`, {
+        const response= await fetch(`${BASE_URL}/users/${id}/`, {
           credentials: 'include',
           method:"GET",
           headers: {
@@ -109,8 +126,16 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
       setUser,
       logout,
       isAuthenticated,
-      setIsAuthenticated
+      setIsAuthenticated,
+      profile,
+      setProfile
     };
+
+    useEffect(() => {
+      if (localStorage.hasOwnProperty('user')) {
+        setIsAuthenticated(true)
+      }
+    }, [])
   
     return (
       <UserContext.Provider value={contextValue}>

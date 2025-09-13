@@ -3,24 +3,31 @@ import {useContext, useEffect, useState} from 'react';
 import { Container, Typography, Button, Box} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
 import { UserContext } from "../contexts/userContext";
-
-// import useSWR from 'swr';
+import { mapUser } from '../utils/utils';
 
 export default function Profile() {
-const { fetchUser } = useContext(UserContext);
-const [profile, setProfile] = useState({first_name: "", last_name: "", title: "", description: "", image_url: null, street_address: "", city: "", state: "", zip_code: ""})
+const {fetchUser, profile, setProfile, } = useContext(UserContext);
 const [visible, setVisible] = useState(false)
+const [saved, setSaved] = useState(false)
 
-// const { mutate } = useSWR('id', fetchUser)
+const mutateUser = async (id: string) => {
+ const fetchedUser = await fetchUser(id)
+ const mutatedUser = mapUser(fetchedUser)
+ localStorage.setItem('user', JSON.stringify(mutatedUser))
+}
 
 useEffect(() => {
-  if (window.localStorage.hasOwnProperty('user')) {
-    const user = window.localStorage.getItem('user') || null
+  if (localStorage.hasOwnProperty('user')) {
+    const user = localStorage.getItem('user') || null
     if (user) {
       setProfile(JSON.parse(user))
     }
   }
 }, [])
+
+useEffect(() => {
+  mutateUser('2')
+}, [saved])
 
 return (
   <Container>
@@ -43,6 +50,7 @@ return (
       setVisible={setVisible}
       profile={profile}
       setProfile={setProfile}
+      setSaved={setSaved}
     />
   </Container>
 )}

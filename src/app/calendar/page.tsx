@@ -5,18 +5,27 @@ import { useState } from "react";
 
 export default function Calendar() {
     const [enabled, setEnabled] = useState(() => {
-        return localStorage.getItem('enabled') === "true" || false;
-        // let state = localStorage.getItem(`${type}`)
-        // return (state === "true")
+        if (typeof window !== "undefined") {
+            try {
+                localStorage.getItem('cal-enabled') === "true" || false;
+            } catch (error) {
+                console.error("Error retrieving from localStorage:", error);
+                return false
+            }
+        }
     })
+
+    const renderCard = (enabled: any, setEnabled: any) => {
+        return <CalendarCard isEnabled={enabled} setIsEnabled={setEnabled}/>
+    }
 
     return (
         <Box sx={{padding: 10, display: "flex", justifyContent: "space-between"}}>
             <Typography variant="h3">Calendar</Typography>
             {enabled ? (
-                <Typography variant="h5">Google Calendar is connected</Typography>
+              <Typography variant="h5">Google Calendar is connected</Typography>     
             ): (
-                <CalendarCard isEnabled={enabled} setIsEnabled={setEnabled}/>
+                renderCard(enabled, setEnabled)            
             )}
 
         </Box>

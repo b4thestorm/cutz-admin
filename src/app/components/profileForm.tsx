@@ -1,6 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { SetStateAction, Dispatch } from 'react';
-import { KeyedMutator } from 'swr';
 import {BASE_URL, getCookie} from '../utils/utils'; 
 
 
@@ -21,10 +20,11 @@ export interface ProfileFormProps {
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setProfile: Dispatch<SetStateAction<{ first_name: string; last_name: string; title: string; description: string; image_url: any; street_address: string; city: string; state: string; zip_code: string; }>>;
+    setSaved: Dispatch<SetStateAction<boolean>>;
   }
 
 export function ProfileFormDialog(props: ProfileFormProps) {
-    const { visible, profile, setProfile, setVisible } = props;
+    const { visible, profile, setProfile, setVisible, setSaved } = props;
     let csrftoken: string;
 
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
@@ -52,7 +52,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("state", profile.state)
       formData.append("zip_code", profile.zip_code);
 
-      const response = await fetch(`${BASE_URL}/users/2/`, {
+      fetch(`${BASE_URL}/users/2/`, {
         credentials: 'include',
         method: 'PATCH', //Thank you gentleman on Stackoverflow =)
         headers: {
@@ -60,10 +60,12 @@ export function ProfileFormDialog(props: ProfileFormProps) {
           'X-CSRFToken': csrftoken
         },
         body: formData,
+      }).then((data)=> {
+        if (data.statusText === "OK") {
+          setSaved(true)
+          setVisible(!visible)
+        }
       })
-      if (response.ok) {
-        setVisible(!visible)
-      }
     }
 
 

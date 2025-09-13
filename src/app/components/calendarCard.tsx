@@ -5,7 +5,7 @@ import { BASE_URL} from '../utils/utils';
 
 
 export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;}) => {
-
+  const [response, setResponse] = useState<EventSource>(new EventSource(`${BASE_URL}/integrations/events/`));
   const handleAuth = async () => { 
     fetch(`${BASE_URL}/integrations/gcal_init/`, {
       credentials: 'include',
@@ -13,26 +13,25 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
     })
   }
 
-  useEffect(()=> {
-    //can check for multiple types of events here, which is a cool thing to be able to do
-    const response = new EventSource(`${BASE_URL}/integrations/events/`) //Open SSE connection
-    response.onmessage = (event) => {
-      if (event.data['status'] === "connected") {
-          setIsEnabled((prevState: any) => !prevState)
-          localStorage.setItem('enabled', isEnabled.toString())
-          response.close()
-      }
+  useEffect(() => {
+        response.onmessage = (event) => {
+          let status = JSON.parse(event['data'])['status']
+          if (status === "connected") {
+            setIsEnabled((prevState: any) => !prevState)
+            localStorage.setItem('cal-enabled', isEnabled.toString())
+            response.close()
+          }
+        }
+        response.onerror = (error) => {
+          response.close() //avoid resource leak
+        }
 
-    }
-    response.onerror = (error) => {
-      response.close()
-    }
-    return () => {
-      response.close() //avoid resource leak
-    }
-  }, [])
-
-  
+        return () => {
+          response.close(); // Cleanup on unmount
+        };
+  }, [response])
+   
+ 
   return (
     <Card>
         <CardMedia

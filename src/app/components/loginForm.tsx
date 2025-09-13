@@ -2,35 +2,19 @@ import { Button, Box, Stack, TextField, Card } from "@mui/material";
 import { redirect } from "next/navigation";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/userContext";
-import { BASE_URL, getCookie } from '../utils/utils';
+import { BASE_URL, getCookie, mapUser } from '../utils/utils';
 
 
 
 export function LoginForm() {
     const [credentials, setCredentials] = useState({email: "", password: ""})
-    const { setUser, setIsAuthenticated , isAuthenticated } = useContext(UserContext)
+    const { setUser, setProfile, setIsAuthenticated , isAuthenticated } = useContext(UserContext)
 
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
         const element = event.target as HTMLInputElement
         setCredentials({...credentials, [element.id]: element.value})
     }
-    const mapUser = (payload: any) => {
-      return {
-        id: payload.id,
-        image_url: payload.image_url,
-        email: payload.email,
-        description: payload.description,
-        street_address: payload.street_address,
-        city: payload.city,
-        state: payload.state,
-        zip_code: payload.zip_code,
-        first_name: payload.first_name,
-        last_name: payload.last_name,
-        title: payload.title,
-        role: payload.role
-      }
-    }
-
+   
     const handleSubmit = async () => {
       const csrftoken = getCookie('csrftoken') as string;
       const formData = JSON.stringify({
@@ -52,7 +36,8 @@ export function LoginForm() {
       }).then((data) => {
         const user = mapUser(data)
         setUser(user)
-        window.localStorage.setItem('user', JSON.stringify(user))
+        setProfile(user)
+        localStorage.setItem('user', JSON.stringify(user))
         setIsAuthenticated((prevState) => !prevState)
         redirect('/profile')
       })
