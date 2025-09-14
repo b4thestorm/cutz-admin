@@ -46,7 +46,6 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
         }
       }
   
-    console.log(setVisible)
 
     return (
         <Dialog open={visibility}>

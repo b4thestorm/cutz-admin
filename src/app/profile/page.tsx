@@ -1,6 +1,6 @@
 'use client'
 import {useContext, useEffect, useState} from 'react';
-import { Container, Typography, Button, Box} from "@mui/material";
+import { Container, Typography, Button, Box, Card, CardMedia} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
 import { UserContext } from "../contexts/userContext";
 import { mapUser } from '../utils/utils';
@@ -29,18 +29,21 @@ useEffect(() => {
   mutateUser(profile.id)
 }, [saved])
 
+console.log(profile.image_url)
 return (
   <Container>
     <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "10px"}}>
-      <Box sx={{minWidth: "200px"}}>
-        <Typography>Name: {`${profile.first_name} ${profile.last_name}`}</Typography>
-        <Typography>Title: {profile.title}</Typography>
-        <Typography>Description: {profile.description}</Typography>
-        <Typography>Address:  {profile.street_address}</Typography>
-        <Typography>City:  {profile.city}</Typography>
-        <Typography>State:  {profile.state}</Typography>
-        <Typography>Zip Code:  {profile.zip_code}</Typography>
-      </Box>
+      <Card sx={{minWidth: "400px", display: "flex", flexDirection: "column", alignItems: "center", padding: "2em"}}>
+        <CardMedia
+          sx={{ height: 75 , width: 75, borderRadius: "100%", position: "relative", bottom: "20px"}}
+          image={`${profile.image_url}`}
+          title={"gcal logo"}
+        />
+        <Typography variant={'h4'}>{`${profile.first_name} ${profile.last_name}`}</Typography>
+        <Typography  variant={'h6'}>{profile.title}</Typography>
+        <Typography>{profile.street_address}</Typography>
+        <Typography>{`${profile.city} ${profile.state} ${profile.zip_code}`}</Typography>
+      </Card>
       <Box sx={{justifySelf: "flex-end"}}>
         <Button variant="contained" color="success" onClick={() => setVisible(!visible)}>Edit Profile</Button>
       </Box>

@@ -46,9 +46,9 @@ export function NavBar() {
 
     const loggedIn = (): JSX.Element => {
       if (isAuthenticated) {
-        return <Button variant="outlined"  sx={{color: "white", maxHeight: 50, alignSelf: "center"}} onClick={toggleDrawer(true)}> Menu </Button>
+        return <Button variant="outlined"  sx={{color: "white", maxHeight: 50, alignSelf: "center", borderColor: "#2e7d32"}} onClick={toggleDrawer(true)}> Menu </Button>
       } else {
-        return <Button sx={{color: "white", maxHeight: 50, alignSelf: "center"}} onClick={() => router.push('/login')}>Login</Button>
+        return <Button sx={{color: "white", maxHeight: 50, alignSelf: "center", borderColor: "#2e7d32"}} onClick={() => router.push('/login')}>Login</Button>
       }
     }
 
@@ -56,10 +56,10 @@ export function NavBar() {
       if (isAuthenticated) {
         return (
           <>
-            <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/profile')}>Profile</Button>
-            <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/services')}>Services</Button>
-            <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/calendar')}>Calendar</Button>
-            <Button variant="outlined" sx={{color: "white"}} onClick={() => logout()}>Logout</Button>
+            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/profile')}>Profile</Button>
+            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/services')}>Services</Button>
+            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/calendar')}>Calendar</Button>
+            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => logout()}>Logout</Button>
           </>
         )
       } else {
@@ -68,7 +68,7 @@ export function NavBar() {
     }
 
     return (
-        <Box sx={{display: "flex", justifyContent: "space-evenly"}}>
+        <Box sx={{display: "flex", justifyContent: "space-evenly", backgroundColor: "#0a0a0a"}}>
         <Typography variant="h1" component="h2">
           <Link href="/">Cutz</Link>
         </Typography>
