@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
-import { SetStateAction, Dispatch } from 'react';
+import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
+import { SetStateAction, Dispatch, useRef } from 'react';
 import {BASE_URL, getCookie} from '../utils/utils'; 
 
 
@@ -26,6 +26,7 @@ export interface ProfileFormProps {
 
 export function ProfileFormDialog(props: ProfileFormProps) {
     const { visible, profile, setProfile, setVisible, setSaved } = props;
+    const fileInput = useRef(null)
     let csrftoken: string;
 
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
@@ -71,21 +72,32 @@ export function ProfileFormDialog(props: ProfileFormProps) {
 
 
     return (
-      <Dialog open={visible}>
-        <DialogTitle>Edit Profile</DialogTitle>
-        <button onClick={() => setVisible(false)}>X</button>
+      <Dialog open={visible} onClose={()=> setVisible(false)}>
         <form>
         <DialogContent>
-              <Stack direction={"column"} spacing={3}>
-                <TextField id="first_name" label="first name" variant="outlined" value={profile.first_name} onChange={(event) => handleChange(event)} required/>
-                <TextField id="last_name" label="last name" variant="outlined" value={profile.last_name} onChange={(event) => handleChange(event)} required/>
-                <TextField id="title" label="title" variant="outlined" value={profile.title} onChange={(event) => handleChange(event)}/>
-                <TextField id="description" label="description" variant="outlined" multiline  value={profile.description}  onChange={(event) => handleChange(event)}/>
-                <input id="image_url" type="file" onChange={(event) => handleChange(event)}/>
-                <TextField id="street_address" label="street address" variant="outlined" value={profile.street_address}  onChange={(event) => handleChange(event)}/> 
-                <TextField id="city" label="city" variant="outlined" value={profile.city}  onChange={(event) => handleChange(event)}/> 
-                <TextField id="state" label="state" variant="outlined" value={profile.state}  onChange={(event) => handleChange(event)}/> 
-                <TextField id="zip_code" label="zip code" variant="outlined" value={profile.zip_code}  onChange={(event) => handleChange(event)}/>
+              <Stack direction={"row"} spacing={3}>
+                <Stack direction={"column"} spacing={2}>
+                  <TextField id="first_name" label="first name" variant="outlined" value={profile.first_name} onChange={(event) => handleChange(event)} required/>
+                  <TextField id="last_name" label="last name" variant="outlined" value={profile.last_name} onChange={(event) => handleChange(event)} required/>
+                  <TextField id="title" label="title" variant="outlined" value={profile.title} onChange={(event) => handleChange(event)}/>
+                  <TextField id="description" label="description" variant="outlined" multiline  value={profile.description}  onChange={(event) => handleChange(event)}/>
+                   <Button id="image_url"
+                    variant="contained"
+                    sx={{backgroundColor: "#2e7d32"}}
+                    onClick={() => { 
+                     if (fileInput.current) {
+                        fileInput.current.click()
+                     }
+                    }
+                  }>Change Picture</Button>
+                  <input id="image_url" type='file' ref={fileInput} onChange={(event)=> handleChange(event)} style={{display: "none"}}/>
+                </Stack>
+                <Stack direction={"column"} spacing={2}>
+                  <TextField id="street_address" label="street address" variant="outlined" value={profile.street_address}  onChange={(event) => handleChange(event)}/> 
+                  <TextField id="city" label="city" variant="outlined" value={profile.city}  onChange={(event) => handleChange(event)}/> 
+                  <TextField id="state" label="state" variant="outlined" value={profile.state}  onChange={(event) => handleChange(event)}/> 
+                  <TextField id="zip_code" label="zip code" variant="outlined" value={profile.zip_code}  onChange={(event) => handleChange(event)}/>
+                </Stack>
               </Stack>
         </DialogContent>
         <DialogActions>
