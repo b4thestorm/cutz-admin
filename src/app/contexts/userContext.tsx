@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useEffect, useState } from 'react';
 import { BASE_URL } from '../utils/utils';
+import { useRouter } from 'next/navigation'
 
 type User = {
          id: string;
@@ -65,6 +66,7 @@ export const UserContext = createContext<UserContextProps>({
 });
 
 export const UserProvider = ({children}: {children: React.ReactElement | React.ReactElement[]}) => {
+    const router = useRouter()
     const [user, setUser] = useState({
       id: "",
       image_url: "",
@@ -107,6 +109,7 @@ export const UserProvider = ({children}: {children: React.ReactElement | React.R
         role: ""
       })
       })
+      router.push('/');
     };
     
     const fetchUser = async (id: string) => {
