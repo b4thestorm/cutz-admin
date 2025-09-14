@@ -29,7 +29,11 @@ export function NavBar() {
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => {
                     setOpen(false);
-                    router.push(`/${text.toLowerCase()}/`)
+                    if (text === 'Logout') {
+                      logout()
+                    } else {
+                      router.push(`/${text.toLowerCase()}/`)
+                    }
                   }}>
                     <ListItemText primary={text} />
                   </ListItemButton>
