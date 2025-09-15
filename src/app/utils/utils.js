@@ -1,3 +1,4 @@
+var _ = require('lodash');
 export const BASE_URL = 'http://localhost:8000' 
 
 export const getCookie = (name) => {
@@ -13,6 +14,10 @@ export const getCookie = (name) => {
         }
     }
     return cookieValue;
+}
+
+export const properCase = (str) => {
+    return  _.startCase(str);
 }
 
 export const mapUser = (payload) => {

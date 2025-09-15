@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useState} from 'react';
+import {Dispatch, SetStateAction, useState, useRef} from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { serviceCardProps } from './serviceCard';
 import {getCookie, BASE_URL} from '../utils/utils'; 
@@ -10,6 +10,8 @@ export interface ServiceFormProps {
 
 export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
     const [service, setService] = useState<serviceCardProps>({id: 2, title: "", description: "", image_url: "", price: ""})
+    const fileInput = useRef(null)
+
     
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
         const element = event.target as HTMLInputElement
@@ -48,15 +50,22 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
   
 
     return (
-        <Dialog open={visibility}>
-            <button onClick={() => setVisible(false)}>X</button>
-            <DialogTitle>New Service</DialogTitle>
+        <Dialog open={visibility} onClose={() => setVisible(false)}>
             <form>
             <DialogContent>
                   <Stack direction={"column"} spacing={3}>
                     <TextField id="title" label="title" variant="outlined" value={service.title} onChange={(event) => handleChange(event)} required/>
                     <TextField id="description" label="description" variant="outlined" value={service.description} onChange={(event) => handleChange(event)} required/>
-                    <input id="image_url" type="file" onChange={(event) => handleChange(event)}/>
+                    <Button id="image_url"
+                    variant="contained"
+                    sx={{backgroundColor: "#E9B949"}}
+                    onClick={() => { 
+                     if (fileInput.current) {
+                        fileInput.current.click()
+                     }
+                    }
+                  }>Select Picture</Button>
+                  <input id="image_url" type='file' ref={fileInput} onChange={(event)=> handleChange(event)} style={{display: "none"}}/>
                     <TextField id="price" label="price" variant="outlined" multiline  value={service.price}  onChange={(event) => handleChange(event)}/>
                   </Stack>
             </DialogContent>

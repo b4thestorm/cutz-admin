@@ -1,10 +1,8 @@
 'use client'
-
 import useSWR from 'swr'
-import { Typography, Box, Container, Stack } from "@mui/material";
+import { Typography, Box, Container, Stack, Button, Grid } from "@mui/material";
 import {useState} from 'react';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
+import { BASE_URL } from '../utils/utils';
 import {ServiceCard, serviceCardProps} from '../components/serviceCard';
 import { ServiceFormDialog } from "../components/serviceForm";
 
@@ -13,7 +11,7 @@ export default function Services() {
     const [visible, setVisible] = useState(false)
 
     const getServices = (path: string): Promise<any> => {
-        return fetch(`http://localhost:8000/${path}`, {
+        return fetch(`${BASE_URL}/${path}`, {
             method: "GET",
             headers: {
                 'Accept': "application/json",
@@ -29,7 +27,7 @@ export default function Services() {
         const response = confirm("Are you sure you want to delete this service?")
         if (response) {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          fetch(`http://localhost:8000/services/${id}`, {
+          fetch(`${BASE_URL}/services/${id}`, {
           method: "DELETE",
           headers: {
             'Accept': 'application/json',
@@ -44,22 +42,22 @@ export default function Services() {
 
     const displayServices = (services: any) => {
             return (
-            <Stack direction={"column"} spacing={3}>
-            {services?.map((service: serviceCardProps) => {
-                    return <ServiceCard service={service} key={service.id} deleteService={deleteService} mutate={mutate}/>
-            })}
-            </Stack>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                {services?.map((service: serviceCardProps, index: string) => (
+                <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
+                    <ServiceCard service={service} key={service.id} deleteService={deleteService} mutate={mutate}/>
+                </Grid>
+              ))}
+            </Grid>
         )
     }
     
     return (
         <Container>
-        <Box sx={{padding: 10, display: "flex", justifyContent: "space-between"}}>
-        <Typography variant={"h2"}>Services</Typography>
-        <IconButton onClick={() => setVisible(!visible)}>
-            <AddIcon fontSize="large" color={"error"}></AddIcon>
-        </IconButton>
-        </Box>
+        <Box sx={{justifySelf: "flex-end", alignSelf: "justify", marginTop: "10px"}}>
+            <Button variant="contained" sx={{backgroundColor: "#E9B949"}} onClick={() => setVisible(!visible)}>Add Service</Button>
+        </Box> 
+        <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "10px"}}>
         <Box>
             {isLoading ? (
                 <Typography>We have no Swag Yet</Typography>
@@ -67,6 +65,7 @@ export default function Services() {
                 displayServices(services)
             )}
         </Box>
+        </Box>   
         <ServiceFormDialog visibility={visible} setVisible={setVisible}/>
         </Container>
     )

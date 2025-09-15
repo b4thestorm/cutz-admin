@@ -29,7 +29,6 @@ useEffect(() => {
   mutateUser(profile.id)
 }, [saved])
 
-console.log(profile.image_url)
 return (
   <Container>
     <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "10px"}}>
@@ -45,7 +44,7 @@ return (
         <Typography>{`${profile.city} ${profile.state} ${profile.zip_code}`}</Typography>
       </Card>
       <Box sx={{justifySelf: "flex-end"}}>
-        <Button variant="contained" color="success" onClick={() => setVisible(!visible)}>Edit Profile</Button>
+        <Button variant="contained" sx={{backgroundColor: "#E9B949"}} onClick={() => setVisible(!visible)}>Edit Profile</Button>
       </Box>
     </Box>
     <ProfileFormDialog

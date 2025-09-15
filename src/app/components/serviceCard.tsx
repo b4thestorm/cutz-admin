@@ -3,9 +3,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton } from '@mui/material';
+import { properCase } from '../utils/utils';
 import { KeyedMutator, mutate } from 'swr';
+import { Button, Stack } from '@mui/material';
 
 export interface serviceCardProps {
     id: number;
@@ -24,15 +24,13 @@ export interface ServiceCardInputProps {
 
 export const ServiceCard = ({service, deleteService}: ServiceCardInputProps) => {
     const handleDelete = () => {
+      const response = window.alert("Sure you want to delete this?")
+      console.log(response)
       deleteService(service.id)
       mutate('services/')
     }
-
     return (
         <Card sx={{ maxWidth: 345 }}>
-        <IconButton onClick={handleDelete}>
-            <DeleteIcon fontSize="large" color={"error"}></DeleteIcon>
-        </IconButton>
         <CardMedia
           sx={{ height: 140 }}
           image={service.image_url}
@@ -40,14 +38,21 @@ export const ServiceCard = ({service, deleteService}: ServiceCardInputProps) => 
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {service.title}
+            {properCase(service.title)}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {service.description}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            ${service.price}
-          </Typography>
+          <br/>
+          <Stack direction={"row"} spacing={5}>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                <strong>${service.price}</strong>
+              </Typography>
+              <Button color="error" onClick={handleDelete}>
+                Remove
+              </Button>
+          </Stack>
+    
         </CardContent>
       </Card>
     )
