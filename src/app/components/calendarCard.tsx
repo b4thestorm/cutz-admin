@@ -1,6 +1,6 @@
 'use client'
 import {useState, useEffect} from 'react';
-import {Card, CardContent, CardMedia, Typography, Button} from '@mui/material'
+import {Card, CardContent, CardMedia, Typography, Button, Stack} from '@mui/material'
 import { BASE_URL} from '../utils/utils';
 
 
@@ -33,18 +33,24 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
    
  
   return (
-    <Card>
+    <Card  sx={{ maxWidth: 345 }}>
+        <center>
         <CardMedia
-          sx={{ height: 140 , width: 140}}
-          image={'/gcal_logo.png'}
+          sx={{ height: 140, width: 140 }}
+          image={'/google-calendar-logo.png'}
           title={"gcal logo"}
         />
+        </center>
         <CardContent>
+          <Stack direction={"column"} spacing={3}>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Google Calendar helps you stay on top of your plans - at home, at work and everywhere in between. 
+            Google Calendar helps you stay on top of your plans - at home,{'\n'}
+            at work and everywhere in between. 
           </Typography>
+          <Button variant="contained" color="success" onClick={() => handleAuth()}> Authorize </Button>
+          </Stack>
         </CardContent>
-        <Button onClick={() => handleAuth()}> Authorize </Button>
+      
     </Card>
     )
 }

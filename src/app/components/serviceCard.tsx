@@ -24,8 +24,6 @@ export interface ServiceCardInputProps {
 
 export const ServiceCard = ({service, deleteService}: ServiceCardInputProps) => {
     const handleDelete = () => {
-      const response = window.alert("Sure you want to delete this?")
-      console.log(response)
       deleteService(service.id)
       mutate('services/')
     }
