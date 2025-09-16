@@ -23,7 +23,7 @@ export const properCase = (str) => {
 export const mapUser = (payload) => {
       return {
         id: payload.id,
-        image_url: payload.image_url,
+        image_url: `${BASE_URL}${payload.image_url}`,
         email: payload.email,
         description: payload.description,
         street_address: payload.street_address,

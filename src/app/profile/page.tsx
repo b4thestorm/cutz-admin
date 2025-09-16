@@ -6,7 +6,7 @@ import { UserContext } from "../contexts/userContext";
 import { mapUser } from '../utils/utils';
 
 export default function Profile() {
-const {fetchUser, profile, setProfile, } = useContext(UserContext);
+const {fetchUser, profile, setProfile } = useContext(UserContext);
 const [visible, setVisible] = useState(false)
 const [saved, setSaved] = useState(false)
 
