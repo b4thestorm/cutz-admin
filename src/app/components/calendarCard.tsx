@@ -33,7 +33,7 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
    
  
   return (
-    <Card  sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }}>
         <center>
         <CardMedia
           sx={{ height: 140, width: 140 }}

@@ -1,6 +1,6 @@
 'use client'
 import {useContext, useEffect, useState} from 'react';
-import { Container, Typography, Button, Box, Card, CardMedia} from "@mui/material";
+import { Typography, Button, Box, Card, CardMedia} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
 import { UserContext } from "../contexts/userContext";
 import { mapUser } from '../utils/utils';
@@ -30,8 +30,8 @@ useEffect(() => {
 }, [saved])
 
 return (
-  <Container>
-    <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "10px"}}>
+  <>
+    <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "3em"}}>
       <Card sx={{minWidth: "400px", display: "flex", flexDirection: "column", alignItems: "center", padding: "2em"}}>
         <CardMedia
           sx={{ height: 75 , width: 75, borderRadius: "100%", position: "relative", bottom: "20px"}}
@@ -54,5 +54,5 @@ return (
       setProfile={setProfile}
       setSaved={setSaved}
     />
-  </Container>
+  </>
 )}
