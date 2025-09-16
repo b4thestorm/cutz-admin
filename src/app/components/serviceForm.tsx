@@ -2,6 +2,7 @@ import {Dispatch, SetStateAction, useState, useRef} from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { serviceCardProps } from './serviceCard';
 import {getCookie, BASE_URL} from '../utils/utils'; 
+import { CloseButton } from './buttons/closeButton';
 
 export interface ServiceFormProps {
     visibility: boolean;
@@ -47,10 +48,15 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
           setVisible(false)
         }
       }
-  
+      
+      const handler = () => {
+        setVisible(false)
+      }
 
+    
     return (
         <Dialog open={visibility} onClose={() => setVisible(false)}>
+            <CloseButton close={handler}/>
             <form>
             <DialogContent>
                   <Stack direction={"column"} spacing={3}>

@@ -1,6 +1,7 @@
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import { SetStateAction, Dispatch, useRef } from 'react';
 import {BASE_URL, getCookie} from '../utils/utils'; 
+import { CloseButton } from './buttons/closeButton';
 
 
 export interface ProfileFormProps {
@@ -70,9 +71,13 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       })
     }
 
-
+    const handler = () => {
+      setVisible(false)
+    }
+    
     return (
       <Dialog open={visible} onClose={()=> setVisible(false)}>
+        <CloseButton close={handler}/>
         <form>
         <DialogContent>
               <Stack direction={"row"} spacing={3}>
