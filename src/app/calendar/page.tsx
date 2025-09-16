@@ -7,7 +7,7 @@ export default function Calendar() {
     const [enabled, setEnabled] = useState(() => {
         if (typeof window !== "undefined") {
             try {
-                localStorage.getItem('cal-enabled') === "true" || false;
+                return localStorage.getItem('enabled') === "true" || false;
             } catch (error) {
                 console.error("Error retrieving from localStorage:", error);
                 return false

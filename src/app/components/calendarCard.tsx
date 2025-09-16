@@ -18,7 +18,7 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
           let status = JSON.parse(event['data'])['status']
           if (status === "connected") {
             setIsEnabled((prevState: any) => !prevState)
-            localStorage.setItem('cal-enabled', isEnabled.toString())
+            localStorage.setItem('enabled', 'true')
             response.close()
           }
         }
