@@ -70,7 +70,7 @@ export function NavBar() {
     return (
         <Box sx={{display: "flex", justifyContent: "space-evenly", backgroundColor: "#0a0a0a"}}>
         <Typography variant="h1" component="h2">
-          <Link href="/">Cutz</Link>
+          <Link href={isAuthenticated ? '/profile' : '/'}>Cutz</Link>
         </Typography>
         {isMobile() ? (
             <>
