@@ -31,7 +31,7 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
         formData.append("barber", service.id.toString());
         formData.append("title", service.title);
         formData.append("description", service.description);
-        formData.append("price", service.price);
+        formData.append("price",  service.price);
         if (service.image_url) {
           formData.append("image_url", service.image_url);
         }
@@ -77,7 +77,7 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
                       currency="usd"
                       locale="en-US"
                       onChangeValue={(event, originalValue, maskedValue) => {
-                        event.target.value = maskedValue?.toString() ?? ""
+                        event.target.value = originalValue.toString()
                         handleChange(event)
                   }}
                   InputElement={<TextField id="price" label="price" variant="outlined" value={service.price} multiline />}
