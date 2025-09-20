@@ -4,13 +4,15 @@ import { serviceCardProps } from './serviceCard';
 import {getCookie, BASE_URL} from '../utils/utils'; 
 import { CloseButton } from './buttons/closeButton';
 import { CurrencyInput } from 'react-currency-mask';
+import { KeyedMutator } from 'swr';
 
 export interface ServiceFormProps {
     visibility: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
+    mutate: KeyedMutator<any>;
 }
 
-export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
+export function ServiceFormDialog ({visibility, setVisible, mutate}: ServiceFormProps) {
     const [service, setService] = useState<serviceCardProps>({id: 2, title: "", description: "", image_url: "", price: ""})
     const fileInput = useRef(null)
 
@@ -46,6 +48,7 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
           body: formData,
         })
         if (response.ok) {
+          mutate()
           setVisible(false)
         }
       }

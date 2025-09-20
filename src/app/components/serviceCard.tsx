@@ -19,13 +19,11 @@ export interface serviceCardProps {
 export interface ServiceCardInputProps {
     service: serviceCardProps;
     deleteService: (id: number)=>void;
-    mutate: KeyedMutator<void>;
 }
 
 export const ServiceCard = ({service, deleteService}: ServiceCardInputProps) => {
     const handleDelete = () => {
       deleteService(service.id)
-      mutate('services/')
     }
     return (
         <Card sx={{ maxWidth: 345 }}>

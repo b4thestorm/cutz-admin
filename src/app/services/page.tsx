@@ -36,22 +36,23 @@ export default function Services() {
         })
         }
     }
-    
-    let { data: services, isLoading } = useSWR('services/', getServices, {revalidateOnFocus: true,});
-    const { mutate } = useSWR('services/', getServices)
-
     const displayServices = (services: any) => {
+        if (!services) {
+            return  <Typography>We have no Swag Yet</Typography>
+        } else {
             return (
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {services?.map((service: serviceCardProps, index: string) => (
-                <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
-                    <ServiceCard service={service} key={service.id} deleteService={deleteService} mutate={mutate}/>
+                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {services?.map((service: serviceCardProps, index: string) => (
+                    <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
+                        <ServiceCard service={service} key={service.id} deleteService={deleteService}/>
+                    </Grid>
+                    ))}
                 </Grid>
-              ))}
-            </Grid>
-        )
+            )
+        }
     }
-    
+
+    let { data: services, mutate,  isLoading } = useSWR('services/', getServices, {revalidateOnFocus: true});
     return (
         <>
         <Box sx={{justifySelf: "flex-end", alignSelf: "justify", marginTop: "10px"}}>
@@ -62,11 +63,11 @@ export default function Services() {
             {isLoading ? (
                 <Typography>We have no Swag Yet</Typography>
             ) : (
-                displayServices(services)
+               displayServices(services)
             )}
         </Box>
         </Box>   
-        <ServiceFormDialog visibility={visible} setVisible={setVisible}/>
+        <ServiceFormDialog visibility={visible} setVisible={setVisible} mutate={mutate}/>
         </>
     )
 }
