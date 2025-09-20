@@ -1,8 +1,9 @@
 import {Dispatch, SetStateAction, useState, useRef} from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, Stack, TextField } from '@mui/material';
 import { serviceCardProps } from './serviceCard';
 import {getCookie, BASE_URL} from '../utils/utils'; 
 import { CloseButton } from './buttons/closeButton';
+import { CurrencyInput } from 'react-currency-mask';
 
 export interface ServiceFormProps {
     visibility: boolean;
@@ -72,7 +73,15 @@ export function ServiceFormDialog ({visibility, setVisible}: ServiceFormProps) {
                     }
                   }>Select Picture</Button>
                   <input id="image_url" type='file' ref={fileInput} onChange={(event)=> handleChange(event)} style={{display: "none"}}/>
-                    <TextField id="price" label="price" variant="outlined" multiline  value={service.price}  onChange={(event) => handleChange(event)}/>
+                  <CurrencyInput
+                      currency="usd"
+                      locale="en-US"
+                      onChangeValue={(event, originalValue, maskedValue) => {
+                        event.target.value = maskedValue?.toString() ?? ""
+                        handleChange(event)
+                  }}
+                  InputElement={<TextField id="price" label="price" variant="outlined" value={service.price} multiline />}
+                  />
                   </Stack>
             </DialogContent>
             <DialogActions>
