@@ -1,7 +1,8 @@
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
-import { SetStateAction, Dispatch, useRef } from 'react';
+import {Box, Button, Dialog, DialogActions, DialogContent, Popper, Stack, TextField, Typography } from '@mui/material';
+import { SetStateAction, Dispatch, useRef, useState, MouseEvent, useEffect } from 'react';
 import {BASE_URL, getCookie} from '../utils/utils'; 
 import { CloseButton } from './buttons/closeButton';
+import React from 'react';
 
 
 export interface ProfileFormProps {
@@ -27,6 +28,10 @@ export interface ProfileFormProps {
 
 export function ProfileFormDialog(props: ProfileFormProps) {
     const { visible, profile, setProfile, setVisible, setSaved } = props;
+    const [error, setError] = useState<any>(null)
+    const [timedError, setTimedError] = useState<string | null>(null)
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+    const [open, setOpen] = useState(false)
     const fileInput = useRef(null)
     let csrftoken: string;
 
@@ -40,8 +45,10 @@ export function ProfileFormDialog(props: ProfileFormProps) {
         setProfile(mutatedProfile)
     }
   
-    const handleSubmit = async () => {
+    const handleSubmit = async (event: any) => {
       csrftoken = getCookie('csrftoken') as string;
+      
+      setAnchorEl(anchorEl ? null : event.currentTarget);
       const formData = new FormData()
       formData.append("first_name", profile.first_name);
       formData.append("last_name", profile.last_name);
@@ -55,7 +62,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("state", profile.state)
       formData.append("zip_code", profile.zip_code);
 
-      fetch(`${BASE_URL}/users/${profile.id}/`, {
+      const response = fetch(`${BASE_URL}/users/${profile.id}/`, {
         credentials: 'include',
         method: 'PATCH', //Thank you gentleman on Stackoverflow =)
         headers: {
@@ -63,10 +70,26 @@ export function ProfileFormDialog(props: ProfileFormProps) {
           'X-CSRFToken': csrftoken
         },
         body: formData,
+      }).then((response) => {
+        if (!response.ok) {
+          // check if there was JSON
+          const contentType = response.headers.get('Content-Type')
+          if (contentType && contentType.includes('application/json')) {
+            // return a rejected Promise that includes the JSON
+            return response.json().then((json) => Promise.reject(json))
+          }
+          // no JSON, just throw an error
+          throw new Error('Something went horribly wrong 💩')
+        }
+        return response.json()
       }).then((data)=> {
-        if (data.statusText === "OK") {
+        if (data.status=== 200) {
           setSaved(true)
           setVisible(!visible)
+        }
+      }).catch((e) => {
+        if (e) {
+          setError(e)
         }
       })
     }
@@ -74,6 +97,19 @@ export function ProfileFormDialog(props: ProfileFormProps) {
     const handler = () => {
       setVisible(false)
     }
+
+    useEffect(() => {
+      if (error) {
+        for(let key in error) {
+          let value = error[key]
+          setOpen(true)
+          setTimedError(`${key} ${value}`)
+          setTimeout(()=> {
+            setOpen(false)
+          }, 3000)
+        }
+      }
+    }, [error, timedError])
     
     return (
       <Dialog open={visible} onClose={()=> setVisible(false)}>
@@ -106,8 +142,13 @@ export function ProfileFormDialog(props: ProfileFormProps) {
               </Stack>
         </DialogContent>
         <DialogActions>
-            <Button variant="contained" color="success" onClick={handleSubmit}>Save Profile</Button>
+            <Button variant="contained" color="success" onClick={(e) => handleSubmit(e)}>Save Profile</Button>
         </DialogActions>
+        <Popper open={open} anchorEl={anchorEl}>
+          <Box sx={{ border: 1, p: 1, bgcolor: 'red' }}>
+            <Typography>{timedError}</Typography>
+          </Box>
+        </Popper>
         </form>
       </Dialog>
     );
