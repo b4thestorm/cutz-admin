@@ -1,6 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
 
 
 export const CloseButton = ({close}: {close: ()=> void }) => {

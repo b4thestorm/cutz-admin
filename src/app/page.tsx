@@ -1,12 +1,15 @@
 'use client'
-import {Typography, Box, Container, Card, CardMedia, Stack, Divider} from "@mui/material";
+import {Typography, Box, Container, Card, CardMedia, Stack, Divider, useMediaQuery} from "@mui/material";
 import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Masonry from '@mui/lab/Masonry';
 
 
 export default function Home() {
   const heights = [250, 450, 190, 270, 170]
+  const theme = useTheme()
+
   const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
   ...theme.typography.body2,
@@ -18,9 +21,13 @@ export default function Home() {
   }),
 }));
 
+  const isMobile = ():boolean => {
+      return useMediaQuery(theme.breakpoints.down('sm'));
+  }
+
   return (
-    <Box sx={{backgroundColor: "#0a0a0a"}}>
-      <Container sx={{height: "1200px"}}>
+    <Box sx={{backgroundColor: "#0a0a0a", height: "100%"}}>
+      <Container sx={{height: "100%"}}>
         <br/>
         <Typography variant={"h3"}>Your Next Hair Cut, Simplified.</Typography>
         <br/>
@@ -38,7 +45,7 @@ export default function Home() {
         </Item>
         ))}
       </Masonry>
-      <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 10}} direction={'row'} spacing={10}>
+      <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: !isMobile ? 10 : 5}} direction={!isMobile ? 'row' : 'column'} spacing={10}>
         <Typography sx={{width: 250}}>
           <Typography variant={'h5'} >Boost your bottom line:</Typography> Keep your chair full and your calendar booked. Cutz helps you manage appointments and minimize no-shows, so you can focus on your craft, not your schedule.
         </Typography>
@@ -52,7 +59,6 @@ export default function Home() {
         </Typography>
       </Stack>
       </Container>
-   
     </Box>
   );
 }

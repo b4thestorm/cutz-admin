@@ -41,9 +41,9 @@ export default function Services() {
             return  <Typography>We have no Swag Yet</Typography>
         } else {
             return (
-                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                 <Grid container spacing={{ xs: 4, md: 3 }} columns={{ xs: 1, sm: 8, md: 12 }}>
                     {services?.map((service: serviceCardProps, index: string) => (
-                    <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
+                    <Grid key={index} size={{ xs: 1, sm: 4, md: 4 }}>
                         <ServiceCard service={service} key={service.id} deleteService={deleteService}/>
                     </Grid>
                     ))}

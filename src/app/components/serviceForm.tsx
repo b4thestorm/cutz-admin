@@ -14,6 +14,7 @@ export interface ServiceFormProps {
 
 export function ServiceFormDialog ({visibility, setVisible, mutate}: ServiceFormProps) {
     const [service, setService] = useState<serviceCardProps>({id: 2, title: "", description: "", image_url: "", price: ""})
+    const [errors, setErrors] = useState({title: false, description: false, image_url: false, price: false})
     const fileInput = useRef(null)
 
     
@@ -38,7 +39,7 @@ export function ServiceFormDialog ({visibility, setVisible, mutate}: ServiceForm
           formData.append("image_url", service.image_url);
         }
 
-        const response = await fetch(`${BASE_URL}/services/`, {
+        await fetch(`${BASE_URL}/services/`, {
           credentials: 'include',
           method: 'POST',
           headers: {
@@ -46,11 +47,28 @@ export function ServiceFormDialog ({visibility, setVisible, mutate}: ServiceForm
             'X-CSRFToken': csrftoken
           },
           body: formData,
-        })
-        if (response.ok) {
-          mutate()
-          setVisible(false)
-        }
+        }).then((response) => {
+          if (!response.ok) {
+            const contentType = response.headers.get('Content-Type')
+            if (contentType && contentType.includes('application/json')) {
+              return response.json().then((json) => Promise.reject(json))
+            }
+            // no JSON, just throw an error
+            throw new Error('Something went horribly wrong 💩')
+          }
+          return response.json()
+        }).then((data)=> {
+          if (data) {
+            mutate()
+            setVisible(false)
+          }
+        }).catch((e) => {
+          if (e) {
+            console.log('hello', e)
+            setErrors(e)
+          }
+      })
+      
       }
       
       const handler = () => {
@@ -64,8 +82,8 @@ export function ServiceFormDialog ({visibility, setVisible, mutate}: ServiceForm
             <form>
             <DialogContent>
                   <Stack direction={"column"} spacing={3}>
-                    <TextField id="title" label="title" variant="outlined" value={service.title} onChange={(event) => handleChange(event)} required/>
-                    <TextField id="description" label="description" variant="outlined" value={service.description} onChange={(event) => handleChange(event)} required/>
+                    <TextField id="title" error={errors.title} label="title" variant="outlined" value={service.title} onChange={(event) => handleChange(event)} required/>
+                    <TextField id="description" error={errors.description} label="description" variant="outlined" value={service.description} onChange={(event) => handleChange(event)} required/>
                     <Button id="image_url"
                     variant="contained"
                     sx={{backgroundColor: "#E9B949"}}
@@ -83,7 +101,7 @@ export function ServiceFormDialog ({visibility, setVisible, mutate}: ServiceForm
                         event.target.value = originalValue.toString()
                         handleChange(event)
                   }}
-                  InputElement={<TextField id="price" label="price" variant="outlined" value={service.price} multiline />}
+                  InputElement={<TextField id="price" error={errors.price} label="price" variant="outlined" value={service.price} multiline />}
                   />
                   </Stack>
             </DialogContent>

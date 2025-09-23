@@ -8,7 +8,7 @@ import { BASE_URL, getCookie, mapUser } from '../utils/utils';
 
 export function LoginForm() {
     const [credentials, setCredentials] = useState({email: "", password: ""})
-    const { setUser, setProfile, setIsAuthenticated , isAuthenticated } = useContext(UserContext)
+    const { setUser, setProfile, setIsAuthenticated } = useContext(UserContext)
 
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
         const element = event.target as HTMLInputElement

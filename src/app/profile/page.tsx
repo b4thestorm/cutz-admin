@@ -1,14 +1,19 @@
 'use client'
 import {useContext, useEffect, useState} from 'react';
-import { Typography, Button, Box, Card, CardMedia} from "@mui/material";
+import { Typography, Button, Box, Card, CardMedia, useMediaQuery, useTheme} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
 import { UserContext } from "../contexts/userContext";
 import { mapUser } from '../utils/utils';
 
 export default function Profile() {
 const {fetchUser, profile, setProfile } = useContext(UserContext);
+const theme = useTheme()
 const [visible, setVisible] = useState(false)
 const [saved, setSaved] = useState(false)
+
+const isMobile = ():boolean => {
+      return useMediaQuery(theme.breakpoints.down('md'));
+}
 
 const mutateUser = async (id: string) => {
  const fetchedUser = await fetchUser(id)
@@ -25,13 +30,29 @@ useEffect(() => {
   }
 }, [])
 
+const mobileStyle = () => {
+  return isMobile() ? (
+    {alignSelf: 'center', marginTop: 5}
+  ) : {}
+}
+
+const profileStyle = () => {
+  return (
+    !isMobile() ? (
+      {display: "flex", justifyContent: "space-around", marginTop: "3em"}
+    ) : (
+      {display: "flex", justifyContent: "space-around", marginTop: "3em", flexDirection: 'column'}
+    )
+  )
+}
+
 useEffect(() => {
   mutateUser(profile.id)
 }, [saved])
 
 return (
   <>
-    <Box sx={{display: "flex", justifyContent: "space-around", marginTop: "3em"}}>
+    <Box sx={profileStyle}>
       <Card sx={{minWidth: "400px", display: "flex", flexDirection: "column", alignItems: "center", padding: "2em"}}>
         <CardMedia
           sx={{ height: 75 , width: 75, borderRadius: "100%", position: "relative", bottom: "20px"}}
@@ -43,7 +64,7 @@ return (
         <Typography>{profile.street_address}</Typography>
         <Typography>{`${profile.city} ${profile.state} ${profile.zip_code}`}</Typography>
       </Card>
-      <Box sx={{justifySelf: "flex-end"}}>
+      <Box sx={mobileStyle}>
         <Button variant="contained" sx={{backgroundColor: "#E9B949"}} onClick={() => setVisible(!visible)}>Edit Profile</Button>
       </Box>
     </Box>

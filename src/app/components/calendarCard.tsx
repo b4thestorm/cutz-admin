@@ -22,7 +22,7 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
             response.close()
           }
         }
-        response.onerror = (error) => {
+        response.onerror = () => {
           response.close() //avoid resource leak
         }
 

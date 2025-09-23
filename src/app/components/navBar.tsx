@@ -2,7 +2,7 @@
 import { Typography, Button, Box, Stack,  Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
-import { Fragment, JSX, useContext, useEffect, useState } from "react";
+import { Fragment, JSX, useContext, useState } from "react";
 import { UserContext } from "../contexts/userContext";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -63,7 +63,12 @@ export function NavBar() {
           </>
         )
       } else {
-        return <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/login')}>Login</Button>
+        return (
+          <>
+            <Button variant="outlined" sx={{color: "white"}} onClick={() => router.push('/login')}>Login</Button>
+            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/about')}>About Cutz</Button>
+          </>
+      )
       }
     }
 
