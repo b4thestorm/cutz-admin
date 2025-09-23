@@ -33,9 +33,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <UserProvider>
         <NavBar></NavBar>
-        <Container>
           {children}
-        </Container>
       </UserProvider>
       </body>
     </html>

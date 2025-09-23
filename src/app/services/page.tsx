@@ -1,6 +1,6 @@
 'use client'
 import useSWR from 'swr'
-import { Typography, Box, Button, Grid } from "@mui/material";
+import { Typography, Box, Button, Grid, Container } from "@mui/material";
 import {useState} from 'react';
 import { BASE_URL } from '../utils/utils';
 import {ServiceCard, serviceCardProps} from '../components/serviceCard';
@@ -54,7 +54,7 @@ export default function Services() {
 
     let { data: services, mutate,  isLoading } = useSWR('services/', getServices, {revalidateOnFocus: true});
     return (
-        <>
+        <Container>
         <Box sx={{justifySelf: "flex-end", alignSelf: "justify", marginTop: "10px"}}>
             <Button variant="contained" sx={{backgroundColor: "#E9B949"}} onClick={() => setVisible(!visible)}>Add Service</Button>
         </Box> 
@@ -68,6 +68,6 @@ export default function Services() {
         </Box>
         </Box>   
         <ServiceFormDialog visibility={visible} setVisible={setVisible} mutate={mutate}/>
-        </>
+        </Container>
     )
 }

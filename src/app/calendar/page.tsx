@@ -1,5 +1,5 @@
 'use client';
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Container } from "@mui/material";
 import { CalendarCard } from "../components/calendarCard";
 import { useState } from "react";
 
@@ -20,13 +20,14 @@ export default function Calendar() {
     }
 
     return (
+        <Container>
         <Box sx={{padding: 10, display: "flex", justifyContent: "space-between"}}>
             {enabled ? (
               <Typography variant="h5">Google Calendar is connected</Typography>     
             ): (
                 renderCard(enabled, setEnabled)            
             )}
-
         </Box>
+        </Container>
     )
 }
