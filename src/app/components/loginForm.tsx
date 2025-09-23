@@ -1,4 +1,4 @@
-import { Button, Box, Stack, TextField, Card } from "@mui/material";
+import { Button, Box, TextField, Card, Link } from "@mui/material";
 import { redirect } from "next/navigation";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/userContext";
@@ -49,9 +49,10 @@ export function LoginForm() {
       <Card sx={{height: 250, width: 250, marginTop: 20}}>
             <form>
             <Box sx={{display: "flex", flexDirection:"column", justifyContent: "space-evenly", alignContent: "flex-end", paddingLeft: 5, paddingRight:5, width: 250, height: 250}}>
-                <TextField id="email" label="email" variant="outlined" value={credentials.email} onChange={(event) => handleChange(event)} required/>
+                <TextField id="email" label="email" variant="outlined" value={credentials.email} onChange={(event) => handleChange(event)} />
                 <TextField id="password" label="password" variant="outlined" value={credentials.password} onChange={(event) => handleChange(event)} type="password"></TextField>
                 <Button variant="contained" color="primary" onClick={handleSubmit}>Login</Button>
+                <Link href={"/reset-password"} sx={{alignSelf: 'flex-end'}}>Forgot my password</Link>
             </Box>
             </form>
         
