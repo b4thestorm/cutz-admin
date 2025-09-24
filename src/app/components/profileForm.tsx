@@ -32,7 +32,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
     const [timedError, setTimedError] = useState<string | null>(null)
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const [open, setOpen] = useState(false)
-    const fileInput = useRef(null)
+  const fileInput = useRef<HTMLInputElement | null>(null)
     let csrftoken: string;
 
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
@@ -125,11 +125,11 @@ export function ProfileFormDialog(props: ProfileFormProps) {
                    <Button id="image_url"
                     variant="contained"
                     sx={{backgroundColor: "#2e7d32"}}
-                    onClick={() => { 
-                     if (fileInput.current) {
-                        fileInput.current.click()
-                     }
-                    }
+              onClick={() => { 
+              if (fileInput.current) {
+                fileInput.current?.click()
+              }
+              }
                   }>Change Picture</Button>
                   <input id="image_url" type='file' ref={fileInput} onChange={(event)=> handleChange(event)} style={{display: "none"}}/>
                 </Stack>
