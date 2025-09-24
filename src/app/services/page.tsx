@@ -2,7 +2,7 @@
 import useSWR from 'swr'
 import { Typography, Box, Button, Grid, Container } from "@mui/material";
 import {useState} from 'react';
-import { BASE_URL } from '../utils/utils';
+import { BASE_URL, getCookie } from '../utils/utils';
 import {ServiceCard, serviceCardProps} from '../components/serviceCard';
 import { ServiceFormDialog } from "../components/serviceForm";
 
@@ -24,14 +24,19 @@ export default function Services() {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     const deleteService = (id: number) => {
+        const csrftoken = getCookie('csrftoken') as string;
+        
         const response = confirm("Are you sure you want to delete this service?")
         if (response) {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          fetch(`${BASE_URL}/services/${id}`, {
+          fetch(`${BASE_URL}/services/${id}/`, {
+          credentials: 'include',
           method: "DELETE",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+
           }
         })
         }
