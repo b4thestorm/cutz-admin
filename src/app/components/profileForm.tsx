@@ -1,6 +1,7 @@
 import {Box, Button, Dialog, DialogActions, DialogContent, Popper, Stack, TextField, Typography } from '@mui/material';
 import { SetStateAction, Dispatch, useRef, useState, MouseEvent, useEffect } from 'react';
 import {BASE_URL, getCookie} from '../utils/utils'; 
+import Image from 'next/image';
 import { CloseButton } from './buttons/closeButton';
 import React from 'react';
 
@@ -32,14 +33,22 @@ export function ProfileFormDialog(props: ProfileFormProps) {
     const [timedError, setTimedError] = useState<string | null>(null)
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const [open, setOpen] = useState(false)
-  const fileInput = useRef<HTMLInputElement | null>(null)
+    const fileInput = useRef<HTMLInputElement | null>(null)
+    const [previewUrl, setPreviewUrl] = useState<string>('');
+
     let csrftoken: string;
 
+    const buildPreviewUrl = (e: any) => {
+      const url = URL.createObjectURL(e.target.files[0]);
+      setPreviewUrl(url);
+    };
+  
     const handleChange = (event: React.SyntheticEvent<EventTarget>) => {
         const element = event.target as HTMLInputElement
         let mutatedProfile = {...profile, [element.id]: element.value}
         if (element.files) {
           const file = element.files?.[0] || null;
+          buildPreviewUrl(event)
           mutatedProfile = {...profile, "image_url": file}
         }
         setProfile(mutatedProfile)
@@ -138,6 +147,9 @@ export function ProfileFormDialog(props: ProfileFormProps) {
                   <TextField id="city" label="city" variant="outlined" value={profile.city}  onChange={(event) => handleChange(event)}/> 
                   <TextField id="state" label="state" variant="outlined" value={profile.state}  onChange={(event) => handleChange(event)}/> 
                   <TextField id="zip_code" label="zip code" variant="outlined" value={profile.zip_code}  onChange={(event) => handleChange(event)}/>
+                  {previewUrl && (
+                      <Image src={previewUrl} width={50} height={50} alt="picture" />
+                  )}
                 </Stack>
               </Stack>
         </DialogContent>
