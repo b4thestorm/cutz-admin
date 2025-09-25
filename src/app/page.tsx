@@ -30,7 +30,7 @@ export default function Home() {
         <br/>
         <br/>
       <center>
-      <Box sx={{width: 500}}>
+      <Box sx={{width: !useMediaQuery(theme.breakpoints.down('sm')) ? 500 : 300}}>
           <Carousel reverse={false}/>
           <Carousel reverse={true}/>
           <Carousel reverse={false}/>
