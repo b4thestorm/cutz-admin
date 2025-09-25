@@ -1,30 +1,27 @@
 'use client'
-import {Typography, Box, Container, Card, CardMedia, Stack, Divider, useMediaQuery} from "@mui/material";
-import { styled } from '@mui/material/styles';
+import {Typography, Box, Container, Stack, useMediaQuery} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Masonry from '@mui/lab/Masonry';
+import Carousel from "./components/carousel";
+import { useEffect } from "react";
 
 
 export default function Home() {
-  const heights = [250, 450, 190, 270, 170]
   const theme = useTheme()
-
-  const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(0.5),
-  textAlign: 'center',
-  color: (theme.vars || theme).palette.text.secondary,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#1A2027',
-  }),
-}));
-
   const isMobile = ():boolean => {
       return useMediaQuery(theme.breakpoints.down('sm'));
   }
 
+  useEffect(() => {
+    const myElement = document.getElementsByTagName('body')[0]
+    const currentPath = window.location.pathname
+    if (currentPath === '/') {
+      myElement.style.backgroundColor = '#0a0a0a';
+    }
+    return () => {
+      myElement.style.backgroundColor = '#D3CEC4'
+    }
+  }, [])
+  
   return (
     <Box sx={{backgroundColor: "#0a0a0a", height: "100%"}}>
       <Container sx={{height: "100%"}}>
@@ -32,20 +29,14 @@ export default function Home() {
         <Typography variant={"h3"}>Your Next Hair Cut, Simplified.</Typography>
         <br/>
         <br/>
-        <Masonry columns={3} spacing={2}>
-        {heights.map((height, index) => (
-        <Item key={index} sx={{ height }}>
-           <Card>
-            <CardMedia
-              sx={{ height: 140 }}
-              image={`barberImg${index + 1}.jpeg`}
-              title={'example'}
-            />
-            </Card>
-        </Item>
-        ))}
-      </Masonry>
-      <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: !isMobile ? 10 : 5}} direction={!isMobile ? 'row' : 'column'} spacing={10}>
+      <center>
+      <Box sx={{width: 500}}>
+          <Carousel reverse={false}/>
+          <Carousel reverse={true}/>
+          <Carousel reverse={false}/>
+      </Box>
+      </center>
+      <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: !isMobile ? 10 : 5}} direction={!useMediaQuery(theme.breakpoints.down('sm')) ? 'row' : 'column'} spacing={10}>
         <Typography sx={{width: 250}}>
           <Typography variant={'h5'} >Boost your bottom line:</Typography> Keep your chair full and your calendar booked. Cutz helps you manage appointments and minimize no-shows, so you can focus on your craft, not your schedule.
         </Typography>

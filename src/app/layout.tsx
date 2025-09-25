@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cutz 2",
+  title: "Cutz",
   description: "schedule haircut appointments easily",
 };
 
