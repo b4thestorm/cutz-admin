@@ -63,7 +63,7 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("last_name", profile.last_name);
       formData.append("title", profile.title);
       formData.append("description", profile.description);
-      if (profile.image_url) {
+      if (profile.image_url instanceof File) {
         formData.append("image_url", profile.image_url);
       }
       formData.append("street_address", profile.street_address);
@@ -71,11 +71,10 @@ export function ProfileFormDialog(props: ProfileFormProps) {
       formData.append("state", profile.state)
       formData.append("zip_code", profile.zip_code);
 
-      const response = fetch(`${BASE_URL}/users/${profile.id}/`, {
+      await fetch(`${BASE_URL}/users/${profile.id}/`, {
         credentials: 'include',
         method: 'PATCH', //Thank you gentleman on Stackoverflow =)
         headers: {
-          'Accept': 'application/json',
           'X-CSRFToken': csrftoken
         },
         body: formData,
@@ -92,10 +91,8 @@ export function ProfileFormDialog(props: ProfileFormProps) {
         }
         return response.json()
       }).then((data)=> {
-        if (data.status=== 200) {
-          setSaved(true)
-          setVisible(!visible)
-        }
+        setSaved(true)
+        setVisible(!visible)
       }).catch((e) => {
         if (e) {
           setError(e)

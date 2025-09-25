@@ -47,7 +47,10 @@ const profileStyle = () => {
 }
 
 useEffect(() => {
-  mutateUser(profile.id)
+  if (saved) {
+    mutateUser(profile.id)
+  }
+  
 }, [saved])
 
 return (
