@@ -16,10 +16,20 @@ export default function Calendar() {
         }
     })
 
-    const slots = [{id: 2, first_name: 'Arnold', start_time: '9am', service_id: 2}, {id: 1, first_name: 'Arnold', start_time: '10am', service_id: 2}, {id: 6, first_name: 'Arnold', start_time: '11am', service_id: 3}]
+    const slots = [{id: 2, first_name: 'Arnold', start_time: '9am', service_id: 2},
+                   {id: 1, first_name: 'Arnold', start_time: '10am', service_id: 2},
+                   {id: 6, first_name: 'Arnold', start_time: '11am', service_id: 3}
+                  ]
 
     const renderCard = (enabled: any, setEnabled: any) => {
         return <CalendarCard isEnabled={enabled} setIsEnabled={setEnabled}/>
+    }
+
+    const disconnect = () => {
+        //simply remove enabled from localStorage and that disables the view
+        console.log('removed connection')
+        localStorage.removeItem('enabled')
+        setEnabled(false)
     }
 
     return (
@@ -30,7 +40,7 @@ export default function Calendar() {
             <>
               <Box>
                 <Typography variant="h5" color="black">Google Calendar is connected</Typography>     
-                <Button variant="contained" color="error">Disconnect</Button>
+                <Button variant="contained" color="error" onClick={() => disconnect()}>Disconnect</Button>
               </Box>
               <Stack  direction={'column'}>
               {slots.map((slot, idx) => {

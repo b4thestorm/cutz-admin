@@ -12,16 +12,16 @@ export interface slotProps {
 export default function CalendarSlot({slot}: {slot :slotProps}) {
     const [service, setService] = useState<any>(null)
     
-    useEffect(()=> {
-        fetch(`${BASE_URL}/services/${slot.service_id}/`, {
-            credentials: 'include',
-            method: 'GET',
-        }).then((response) => {
-            return response.json
-        }).then((data) => {
-            setService(data)
-        })
-    }, []) 
+    // useEffect(()=> {
+    //     fetch(`${BASE_URL}/services/${slot.service_id}/`, {
+    //         credentials: 'include',
+    //         method: 'GET',
+    //     }).then((response) => {
+    //         return response.json
+    //     }).then((data) => {
+    //         setService(data)
+    //     })
+    // }, []) 
         
 
     return (
@@ -29,7 +29,7 @@ export default function CalendarSlot({slot}: {slot :slotProps}) {
             <Box>
                 <Typography variant={'h5'} color={'black'}>{slot.first_name}</Typography>
                 <Typography color={'black'}>{slot.start_time}</Typography>
-                <Typography color={'black'}>{service?.title || 'Dark Caesar'}</Typography>
+                <Typography color={'black'}>{'Dark Caesar'}</Typography>
             </Box>
             <Box sx={{alignSelf: 'center'}}>
                 <Button variant={'contained'} color={'error'} sx={{borderRadius: 19}}>Cancel</Button>

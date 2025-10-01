@@ -28,7 +28,7 @@ export default function Carousel ({reverse}: {reverse: boolean}): React.JSX.Elem
             }}
         >
             {imgs.map((photo) => {
-                return <Image key={photo.id} src={photo.src} alt={''} width={150} height={150} style={{borderRadius: 5}}/>
+                return <Image key={photo.id} src={photo.src} alt={''} width={500} height={500} style={{borderRadius: 5}}/>
             })}
         </motion.div>
         <motion.div

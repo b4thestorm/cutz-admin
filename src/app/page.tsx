@@ -32,8 +32,6 @@ export default function Home() {
       <center>
       <Box sx={{width: !useMediaQuery(theme.breakpoints.down('sm')) ? 500 : 300}}>
           <Carousel reverse={false}/>
-          <Carousel reverse={true}/>
-          <Carousel reverse={false}/>
       </Box>
       </center>
       <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: !isMobile ? 10 : 5}} direction={!useMediaQuery(theme.breakpoints.down('sm')) ? 'row' : 'column'} spacing={10}>
