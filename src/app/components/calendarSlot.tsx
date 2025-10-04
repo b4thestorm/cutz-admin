@@ -1,35 +1,28 @@
 import { Typography, Box, Button} from "@mui/material";
-import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/utils";
 
-export interface slotProps {
+export interface serviceProp {
     id: number;
-    first_name: string;
-    start_time: string;
-    service_id: number;
+    title: string;
+    description: string;
+    image_url: string;
+    price: number;
+    barber: number;
 }
 
-export default function CalendarSlot({slot}: {slot :slotProps}) {
-    const [service, setService] = useState<any>(null)
-    
-    // useEffect(()=> {
-    //     fetch(`${BASE_URL}/services/${slot.service_id}/`, {
-    //         credentials: 'include',
-    //         method: 'GET',
-    //     }).then((response) => {
-    //         return response.json
-    //     }).then((data) => {
-    //         setService(data)
-    //     })
-    // }, []) 
-        
+export interface slotProps {
+    eventid: string;
+    start_time: string;
+    end_time: string;
+    service_id: serviceProp;
+}
 
+export default function CalendarSlot({calendar_event}: {calendar_event :slotProps}) {           
     return (
-        <Box sx={{display: "flex", width:350, justifyContent: "space-between", backgroundColor: '#D9D9D9', marginTop: 5, borderRadius: 10, border: '5px solid grey', padding: '15px'}}>
+        <Box sx={{display: "flex", width:350, justifyContent: "space-between", backgroundColor: '#D9D9D9', marginTop: 5,  border: '1px solid grey', padding: '15px'}}>
             <Box>
-                <Typography variant={'h5'} color={'black'}>{slot.first_name}</Typography>
-                <Typography color={'black'}>{slot.start_time}</Typography>
-                <Typography color={'black'}>{'Dark Caesar'}</Typography>
+                {/* <Typography variant={'h5'} color={'black'}>{calendar_event.first_name}</Typography> */}
+                <Typography color={'black'}>{calendar_event.start_time}</Typography>
+                <Typography color={'black'}>{calendar_event.service_id.title}</Typography>
             </Box>
             <Box sx={{alignSelf: 'center'}}>
                 <Button variant={'contained'} color={'error'} sx={{borderRadius: 19}}>Cancel</Button>

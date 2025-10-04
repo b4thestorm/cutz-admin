@@ -36,15 +36,15 @@ export default function Home() {
       </center>
       <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: !isMobile ? 10 : 5}} direction={!useMediaQuery(theme.breakpoints.down('sm')) ? 'row' : 'column'} spacing={10}>
         <Typography sx={{width: 250}}>
-          <Typography variant={'h5'} >Boost your bottom line:</Typography> Keep your chair full and your calendar booked. Cutz helps you manage appointments and minimize no-shows, so you can focus on your craft, not your schedule.
+          <Typography variant={'h5'} >Boost your bottom line</Typography> Keep your chair full and your calendar booked. Cutz helps you manage appointments and minimize no-shows, so you can focus on your craft, not your schedule.
         </Typography>
 
         <Typography sx={{width: 250}}>
-          <Typography variant={'h5'}>Grow your client list:</Typography> Attract new customers by making your shop easy to find and book, 24/7. Cutz puts your talent in front of a wider audience, helping you build your business effortlessly.
+          <Typography variant={'h5'}>Grow your client list</Typography> Attract new customers by making your shop easy to find and book, 24/7. Cutz puts your talent in front of a wider audience, helping you build your business effortlessly.
         </Typography>
 
         <Typography sx={{width: 250}}>
-          <Typography variant={'h5'}>Increase client loyalty:</Typography>Give your exisiting clients a simple way to retain your services. Using the companion iphone and android app, a client can instantly stay up to date with your schedule and book quickly.
+          <Typography variant={'h5'}>Increase client loyalty</Typography>Give your exisiting clients a simple way to retain your services. Using the companion iphone and android app, a client can instantly stay up to date with your schedule and book quickly.
         </Typography>
       </Stack>
       </Container>
