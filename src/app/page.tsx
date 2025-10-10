@@ -1,9 +1,23 @@
 'use client'
-import {Typography, Box, Container, Stack, useMediaQuery} from "@mui/material";
+import {Typography, Box, Stack, useMediaQuery} from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import Carousel from "./components/carousel";
 import { useEffect } from "react";
 
+import { lazy } from "react";
+
+import IntroContent from "./content/IntroContent.json";
+import MiddleBlockContent from "./content/MiddleBlockContent.json";
+import AboutContent from "./content/AboutContent.json";
+import MissionContent from "./content/MissionContent.json";
+import ProductContent from "./content/ProductContent.json";
+import ContactContent from "./content/ContactContent.json";
+
+import { Contact } from "./components/landingPage/ContactForm";
+import { MiddleBlock } from "./components/landingPage/MiddleBlock";  
+import  Container  from "./common/Container";
+import  ScrollToTop  from  "./common/ScrollToTop";
+import { ContentBlock } from "./components/landingPage/ContentBlock";
 
 export default function Home() {
   const theme = useTheme()
@@ -23,31 +37,47 @@ export default function Home() {
   }, [])
   
   return (
-    <Box sx={{backgroundColor: "#0a0a0a", height: "100%"}}>
-      <Container sx={{height: "100%"}}>
-        <br/>
-        <Typography variant={"h3"}>Your Next Hair Cut, Simplified.</Typography>
-        <br/>
-        <br/>
-      <center>
-      <Box sx={{width: !useMediaQuery(theme.breakpoints.down('sm')) ? 500 : 300}}>
-          <Carousel reverse={false}/>
-      </Box>
-      </center>
-      <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: !isMobile ? 10 : 5}} direction={!useMediaQuery(theme.breakpoints.down('sm')) ? 'row' : 'column'} spacing={10}>
-        <Typography sx={{width: 250}}>
-          <Typography variant={'h5'} >Boost your bottom line</Typography> Keep your chair full and your calendar booked. Cutz helps you manage appointments and minimize no-shows, so you can focus on your craft, not your schedule.
-        </Typography>
+     <Container>
+      <ScrollToTop />
+      <ContentBlock
+        direction="right"
+        title={IntroContent.title}
+        content={IntroContent.text}
+        button={IntroContent.button}
+        img={'/barberImg3.jpeg'}
+        icon="developer.svg"
+        id="intro"
+      />
+      <MiddleBlock
+        title={MiddleBlockContent.title}
+        content={MiddleBlockContent.text}
+        button={MiddleBlockContent.button}
+      />
+      <ContentBlock
+        direction="left"
+        title={AboutContent.title}
+        content={AboutContent.text}
+        img={'/barberImg5.jpeg'}
+        icon="graphs.svg"
+        id="about"
+      />
+      <ContentBlock
+        direction="right"
+        title={MissionContent.title}
+        content={MissionContent.text}
+        img={'/barberImg2.jpeg'}
+        icon="product-launch.svg"
+        id="mission"
+      />
+      <ContentBlock
+        direction="left"
+        title={ProductContent.title}
+        content={ProductContent.text}
+        img={'/barberImg1.jpeg'}
+        icon="waving.svg"
+        id="product"
+      />
 
-        <Typography sx={{width: 250}}>
-          <Typography variant={'h5'}>Grow your client list</Typography> Attract new customers by making your shop easy to find and book, 24/7. Cutz puts your talent in front of a wider audience, helping you build your business effortlessly.
-        </Typography>
-
-        <Typography sx={{width: 250}}>
-          <Typography variant={'h5'}>Increase client loyalty</Typography>Give your exisiting clients a simple way to retain your services. Using the companion iphone and android app, a client can instantly stay up to date with your schedule and book quickly.
-        </Typography>
-      </Stack>
-      </Container>
-    </Box>
+    </Container>
   );
 }

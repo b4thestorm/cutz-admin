@@ -36,3 +36,11 @@ export const mapUser = (payload) => {
         role: payload.role
       }
 }
+
+export const formatAtHour = (isoString) => {
+  const d = new Date(isoString);
+  if (Number.isNaN(d.getTime())) throw new Error('Invalid date');
+
+  const hour = d.getHours();
+  return `@${String(hour).padStart(2, '0')}`;
+}

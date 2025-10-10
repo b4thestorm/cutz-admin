@@ -1,4 +1,5 @@
-import { Typography, Box, Button} from "@mui/material";
+import { Typography, Box, Button, Stack} from "@mui/material";
+import { formatAtHour } from "../utils/utils";
 
 export interface serviceProp {
     id: number;
@@ -11,21 +12,24 @@ export interface serviceProp {
 
 export interface slotProps {
     eventid: string;
+    name: string;
     start_time: string;
     end_time: string;
     service_id: serviceProp;
 }
 
-export default function CalendarSlot({calendar_event}: {calendar_event :slotProps}) {           
+export default function CalendarSlot({calendar_event}: {calendar_event :slotProps}) {  
     return (
-        <Box sx={{display: "flex", width:350, justifyContent: "space-between", backgroundColor: '#D9D9D9', marginTop: 5,  border: '1px solid grey', padding: '15px'}}>
-            <Box>
-                {/* <Typography variant={'h5'} color={'black'}>{calendar_event.first_name}</Typography> */}
-                <Typography color={'black'}>{calendar_event.start_time}</Typography>
-                <Typography color={'black'}>{calendar_event.service_id.title}</Typography>
-            </Box>
+        <Box sx={{display: "flex", justifyContent: "space-between", width: 350, backgroundColor: '#D9D9D9', marginTop: 5, borderRadius: 1, border: '1px solid grey', padding: '15px'}}>
+            <Stack direction={'column'}>
+            <Typography color={'black'}>{calendar_event.service_id.title}</Typography>
+            <Stack direction="row">
+                <Typography color={'black'}>Appointment with {calendar_event.name} </Typography>
+                <Typography color={'black'}>{formatAtHour(calendar_event.start_time)}</Typography>
+            </Stack>
+            </Stack>
             <Box sx={{alignSelf: 'center'}}>
-                <Button variant={'contained'} color={'error'} sx={{borderRadius: 19}}>Cancel</Button>
+                <Button color={'error'}>Cancel</Button>
             </Box>
         </Box>     
     )

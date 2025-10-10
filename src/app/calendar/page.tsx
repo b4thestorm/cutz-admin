@@ -16,9 +16,8 @@ export default function Calendar() {
             }
         }
     })
-    
+    const [amount, setAmount] = useState(0)
     const [slots, setSlots] = useState<slotProps[]>([])
-    // {id: 2, first_name: 'Arnold', start_time: '9am', service_id: 2},
 
     const renderCard = (enabled: any, setEnabled: any) => {
         return <CalendarCard isEnabled={enabled} setIsEnabled={setEnabled}/>
@@ -62,15 +61,24 @@ export default function Calendar() {
             }
             return r.json()
         }).then((response) => {
-            console.log(response)
             setSlots(response)
-            if (response.ok) {
-                console.log(response)
-                setSlots(response)
-            }
         }
       )
     }
+
+    useEffect(() => {
+        if (slots) {
+            let total = 0
+            for (let idx = 0; idx < slots.length; idx++) {
+                total += slots[idx].service_id.price
+            }
+            setAmount(total)
+        }
+    }, [slots])
+
+    useEffect(() => {
+        requestEvents()
+    }, [enabled])
 
     return (
         <Container>
@@ -81,6 +89,14 @@ export default function Calendar() {
                 <Typography variant="h5" color="black">Google Calendar is connected</Typography>
                 <Button variant="contained" color="error" onClick={() => disconnect()}>Disconnect</Button>
                 <Button variant="contained" color="primary" onClick={() => requestEvents()}>Sync Calendar Events</Button>
+                <Box>
+                    <Typography variant={'h1'}>${amount}</Typography>
+                    <Typography color="black">Potential Earnings</Typography>
+                </Box>
+                <Box>
+                    <Typography variant={'h1'}>{slots.length}</Typography>
+                    <Typography color="black">Clients Booked</Typography>
+                </Box>
             </Stack>
             {slots && slots.length > 0 ? (
               renderCalendarEvents(slots)
