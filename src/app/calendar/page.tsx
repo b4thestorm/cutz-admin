@@ -1,27 +1,14 @@
 'use client';
 import { Typography, Box, Container, Button, Stack } from "@mui/material";
-import { CalendarCard } from "../components/calendarCard";
 import  CalendarSlot, { slotProps }  from "../components/calendarSlot";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BASE_URL } from "../utils/utils";
+import { CalendarContext } from "../contexts/calendarContext";
 
 export default function Calendar() {
-    const [enabled, setEnabled] = useState(() => {
-        if (typeof window !== "undefined") {
-            try {
-                return localStorage.getItem('enabled') === "true" || false;
-            } catch (error) {
-                console.error("Error retrieving from localStorage:", error);
-                return false
-            }
-        }
-    })
+    const { enabled } = useContext(CalendarContext)
     const [amount, setAmount] = useState(0)
     const [slots, setSlots] = useState<slotProps[]>([])
-
-    const renderCard = (enabled: any, setEnabled: any) => {
-        return <CalendarCard isEnabled={enabled} setIsEnabled={setEnabled}/>
-    }
 
     const renderCalendarEvents = (calendar_events: slotProps[]) => {
         console.log("I was called and passed to the stack", calendar_events)
@@ -32,12 +19,6 @@ export default function Calendar() {
             })}
         </Stack>
         )
-    }
-
-    const disconnect = () => {
-        //simply remove enabled from localStorage and that disables the view
-        localStorage.removeItem('enabled')
-        setEnabled(false)
     }
 
     const requestEvents = () => {
@@ -87,8 +68,7 @@ export default function Calendar() {
             <>
             <Stack  direction={'column'} spacing={2}>
                 <Typography variant="h5" color="black">Google Calendar is connected</Typography>
-                <Button variant="contained" color="error" onClick={() => disconnect()}>Disconnect</Button>
-                <Button variant="contained" color="primary" onClick={() => requestEvents()}>Sync Calendar Events</Button>
+                <Stack direction={'row'} spacing={5}>
                 <Box>
                     <Typography variant={'h1'}>${amount}</Typography>
                     <Typography color="black">Potential Earnings</Typography>
@@ -97,6 +77,8 @@ export default function Calendar() {
                     <Typography variant={'h1'}>{slots.length}</Typography>
                     <Typography color="black">Clients Booked</Typography>
                 </Box>
+                </Stack>
+                <Button variant="contained" color="primary" onClick={() => requestEvents()}>Sync Calendar Events</Button>
             </Stack>
             {slots && slots.length > 0 ? (
               renderCalendarEvents(slots)
@@ -105,7 +87,7 @@ export default function Calendar() {
             )}
             </>
             ): (
-                renderCard(enabled, setEnabled)            
+                <Typography color="black">No Calendar Connected</Typography>
             )}
         </Box>
         </Container>

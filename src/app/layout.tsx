@@ -4,6 +4,8 @@ import { NavBar } from "./components/navBar";
 import { Container } from "@mui/material";
 import "./globals.css";
 import { UserProvider} from "./contexts/userContext";
+import { CalendarProvider} from "./contexts/calendarContext";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +34,12 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <UserProvider>
+        <CalendarProvider>
         <NavBar></NavBar>
         <>
           {children}
         </>
+        </CalendarProvider>
       </UserProvider>
       </body>
     </html>

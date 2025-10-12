@@ -3,7 +3,6 @@ import { Fade } from "react-awesome-reveal";
 import Image from 'next/image'
 import { ContentBlockProps }  from "./types";
 import { Button } from "../../../common/Button";
-import { SvgIcon } from "../../../common/SVGIcon";
 import {
   ContentSection,
   Content,

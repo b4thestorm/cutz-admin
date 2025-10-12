@@ -1,10 +1,12 @@
 'use client'
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import {Card, CardContent, CardMedia, Typography, Button, Stack} from '@mui/material'
 import { BASE_URL} from '../utils/utils';
+import { CalendarContext } from '../contexts/calendarContext';
 
 
 export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;}) => {
+  const { disconnect } = useContext(CalendarContext)
   const [response, setResponse] = useState<EventSource>(new EventSource(`${BASE_URL}/integrations/events/`));
   const handleAuth = async () => { 
     fetch(`${BASE_URL}/integrations/gcal_init/`, {
@@ -36,7 +38,7 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
     <Card sx={{ maxWidth: 345 }}>
         <center>
         <CardMedia
-          sx={{ height: 140, width: 140 }}
+          sx={{ height: 250, width: 140 }}
           image={'/google-calendar-logo.png'}
           title={"gcal logo"}
         />
@@ -47,7 +49,14 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
             Google Calendar helps you stay on top of your plans - at home,{'\n'}
             at work and everywhere in between. 
           </Typography>
-          <Button variant="contained" color="success" onClick={() => handleAuth()}> Authorize </Button>
+          {
+            !isEnabled ? (
+              <Button variant="contained" color="success" onClick={() => handleAuth()}> Authorize </Button>
+            ) : (
+              <Button variant="contained" color="error" onClick={() => disconnect()}>Disconnect</Button>
+            )
+          }
+          
           </Stack>
         </CardContent>
       

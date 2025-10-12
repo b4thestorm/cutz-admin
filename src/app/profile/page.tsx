@@ -1,12 +1,16 @@
 'use client'
 import {useContext, useEffect, useState} from 'react';
-import { Typography, Button, Box, Card, CardMedia, useMediaQuery, useTheme} from "@mui/material";
+import { Typography, Button, Box, Card, CardMedia, useMediaQuery, useTheme, Grid} from "@mui/material";
 import {ProfileFormDialog} from '../components/profileForm';
 import { UserContext } from "../contexts/userContext";
 import { mapUser } from '../utils/utils';
+import { CalendarCard } from '../components/calendarCard';
+import { CalendarContext } from '../contexts/calendarContext';
 
 export default function Profile() {
 const {fetchUser, profile, setProfile } = useContext(UserContext);
+const { enabled, setEnabled } = useContext(CalendarContext)
+
 const theme = useTheme()
 const [visible, setVisible] = useState(false)
 const [saved, setSaved] = useState(false)
@@ -30,21 +34,6 @@ useEffect(() => {
   }
 }, [])
 
-const mobileStyle = () => {
-  return isMobile() ? (
-    {alignSelf: 'center', marginTop: 5}
-  ) : {}
-}
-
-const profileStyle = () => {
-  return (
-    !isMobile() ? (
-      {display: "flex", justifyContent: "space-around", marginTop: "3em"}
-    ) : (
-      {display: "flex", justifyContent: "space-around", marginTop: "3em", flexDirection: 'column'}
-    )
-  )
-}
 
 useEffect(() => {
   if (saved) {
@@ -54,8 +43,8 @@ useEffect(() => {
 }, [saved])
 
 return (
-  <>
-    <Box sx={profileStyle}>
+  <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
+    <Grid container spacing={{ xs: 4, md: 3 }} columns={{ xs: 1, sm: 8, md: 12 }} sx={{marginTop: 5}}>
       <Card sx={{minWidth: "400px", display: "flex", flexDirection: "column", alignItems: "center", padding: "2em"}}>
         <CardMedia
           sx={{ height: 75 , width: 75, borderRadius: "100%", position: "relative", bottom: "20px"}}
@@ -66,11 +55,10 @@ return (
         <Typography  variant={'h6'}>{profile.title}</Typography>
         <Typography>{profile.street_address}</Typography>
         <Typography>{`${profile.city} ${profile.state} ${profile.zip_code}`}</Typography>
+        <Button variant="contained" sx={{backgroundColor: "#E9B949", alignSelf: 'center', marginTop: '1em'}} onClick={() => setVisible(!visible)}>Edit Profile</Button>
       </Card>
-      <Box sx={mobileStyle}>
-        <Button variant="contained" sx={{backgroundColor: "#E9B949"}} onClick={() => setVisible(!visible)}>Edit Profile</Button>
-      </Box>
-    </Box>
+      <CalendarCard isEnabled={enabled} setIsEnabled={setEnabled}/>
+    </Grid>
     <ProfileFormDialog
       visible={visible}
       setVisible={setVisible}
@@ -78,5 +66,5 @@ return (
       setProfile={setProfile}
       setSaved={setSaved}
     />
-  </>
+  </Box>
 )}
