@@ -58,7 +58,7 @@ export function NavBar() {
           <>
             <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/profile')}>Profile</Button>
             <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/services')}>Services</Button>
-            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/calendar')}>Calendar</Button>
+            <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => router.push('/calendar')}>Bookings</Button>
             <Button variant="outlined" sx={{color: "white", borderColor: "#2e7d32"}} onClick={() => logout()}>Logout</Button>
           </>
         )

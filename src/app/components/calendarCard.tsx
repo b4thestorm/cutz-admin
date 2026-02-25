@@ -1,17 +1,24 @@
 'use client'
 import {useState, useEffect, useContext} from 'react';
-import {Card, CardContent, CardMedia, Typography, Button, Stack} from '@mui/material'
-import { BASE_URL} from '../utils/utils';
+import {Card, CardContent, CardMedia, Typography, Button, Stack, Input, TextField} from '@mui/material'
+import { BASE_URL, getCookie} from '../utils/utils';
 import { CalendarContext } from '../contexts/calendarContext';
 
 
 export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;}) => {
-  const { disconnect } = useContext(CalendarContext)
-  const [response, setResponse] = useState<EventSource>(new EventSource(`${BASE_URL}/integrations/events/`));
-  const handleAuth = async () => { 
-    fetch(`${BASE_URL}/integrations/gcal_init/`, {
+  const { disconnect, response } = useContext(CalendarContext)
+  const [calendarId, setCalendarId] = useState('')
+  const handleAuth = (event: any) => { 
+    event.preventDefault();
+    const csrftoken = getCookie('csrftoken') as string;
+    fetch(`${BASE_URL}/integrations/gcal_init/?calendar_id=${calendarId}`, {
       credentials: 'include',
       method: 'GET',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-CSRFToken': csrftoken
+      },
     })
   }
 
@@ -51,7 +58,10 @@ export const CalendarCard = ({isEnabled, setIsEnabled}: {isEnabled: boolean, set
           </Typography>
           {
             !isEnabled ? (
-              <Button variant="contained" color="success" onClick={() => handleAuth()}> Authorize </Button>
+              <form onSubmit={handleAuth}>
+              <TextField type={'text'} value={calendarId} variant="filled" onChange={(event) => setCalendarId(event.target.value)}  placeholder="Your Calendar ID" fullWidth />
+              <Button variant="contained" type="submit" color="success" sx={{marginTop: 2}} fullWidth> Connect </Button>
+              </form>
             ) : (
               <Button variant="contained" color="error" onClick={() => disconnect()}>Disconnect</Button>
             )

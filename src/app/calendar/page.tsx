@@ -1,5 +1,6 @@
 'use client';
-import { Typography, Box, Container, Button, Stack } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
+import { Typography, Box, Container, Button, Stack, useMediaQuery} from "@mui/material";
 import  CalendarSlot, { slotProps }  from "../components/calendarSlot";
 import { useContext, useEffect, useState } from "react";
 import { BASE_URL } from "../utils/utils";
@@ -7,13 +8,14 @@ import { CalendarContext } from "../contexts/calendarContext";
 
 export default function Calendar() {
     const { enabled } = useContext(CalendarContext)
+    const theme = useTheme()
+
     const [amount, setAmount] = useState(0)
     const [slots, setSlots] = useState<slotProps[]>([])
 
     const renderCalendarEvents = (calendar_events: slotProps[]) => {
-        console.log("I was called and passed to the stack", calendar_events)
         return (
-        <Stack  direction={'column'}>
+        <Stack sx={{marginTop: useMediaQuery(theme.breakpoints.down('sm')) ? 10 : 0 }} direction={'column'}>
             {calendar_events.map((slot: slotProps) => {
                 return <CalendarSlot key={slot.eventid} calendar_event={slot}/>
             })}
@@ -21,8 +23,9 @@ export default function Calendar() {
         )
     }
 
-    const requestEvents = () => {
-        fetch(`${BASE_URL}/integrations/calendar_events/`,{
+    const requestEvents = (manual: string = '') => {
+        const query = manual === 'force' ? '?manual=force' : ''
+        fetch(`${BASE_URL}/integrations/calendar_events/${query}`,{
         method: "GET",
         credentials: 'include',
         headers: {
@@ -63,7 +66,7 @@ export default function Calendar() {
 
     return (
         <Container>
-        <Box sx={{padding: 10, display: "flex", justifyContent: "space-between"}}>
+        <Box sx={{padding: 10, display: "flex", justifyContent: "space-between", flexWrap: 'wrap' }}>
             {enabled ? (
             <>
             <Stack  direction={'column'} spacing={2}>
@@ -78,12 +81,12 @@ export default function Calendar() {
                     <Typography color="black">Clients Booked</Typography>
                 </Box>
                 </Stack>
-                <Button variant="contained" color="primary" onClick={() => requestEvents()}>Sync Calendar Events</Button>
+                <Button variant="contained" color="primary" onClick={() => requestEvents('force')}>Sync Calendar Events</Button>
             </Stack>
             {slots && slots.length > 0 ? (
               renderCalendarEvents(slots)
               ) : (
-                <Typography color="black">No Calendar Events Presently</Typography>
+                <Typography sx={{marginTop: useMediaQuery(theme.breakpoints.down('sm')) ? 10 : 0}} color="black">No Calendar Events Presently</Typography>
             )}
             </>
             ): (

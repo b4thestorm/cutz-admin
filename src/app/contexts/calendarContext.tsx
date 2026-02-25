@@ -1,15 +1,18 @@
 'use client'
 import React, { createContext, useState} from 'react'
+import { BASE_URL } from '../utils/utils';
 
 interface CalendarContextProps {
   enabled: boolean;
   setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   disconnect: any;
+  response: EventSource; 
 }
 
-export const CalendarContext = createContext<CalendarContextProps>({enabled: false, setEnabled: ()=> {}, disconnect: () => {}})
+export const CalendarContext = createContext<CalendarContextProps>({enabled: false, setEnabled: ()=> {}, disconnect: () => {}, response: new EventSource('')})
 
 export const CalendarProvider = ({ children }: { children: React.ReactElement | React.ReactElement[]}) => {
+  const [response, setResponse] = useState<EventSource>(new EventSource(`${BASE_URL}/integrations/events/`));
   const [enabled, setEnabled] = useState(() => {
           if (typeof window !== "undefined") {
               try {
@@ -32,7 +35,8 @@ export const CalendarProvider = ({ children }: { children: React.ReactElement | 
   const contextValue = {
       enabled,
       setEnabled, 
-      disconnect
+      disconnect,
+      response,
     };
 
 
